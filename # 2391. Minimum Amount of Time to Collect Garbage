@@ -1,0 +1,33 @@
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+	int garbageCollection(vector<string>& garbage, vector<int>& travel) {
+		int g = 0, p = 0, m = 0;
+		int pg = 0, pp = 0, pm = 0;
+		for (int i = 0; i < size(garbage); i++) {
+			int cg = 0, cp = 0, cm = 0;
+			for (char c : garbage[i]) {
+				if (c == 'G') cg++;
+				else if (c == 'P') cp++;
+				else cm++;
+			}
+			if (cg > 0) {
+				for (; pg < i; pg++) g += travel[pg];
+				g += cg;
+			}
+			if (cp > 0) {
+				for (; pp < i; pp++) p += travel[pp];
+				p += cp;
+			}
+			if (cm > 0) {
+				for (; pm < i; pm++) m += travel[pm];
+				m += cm;
+			}
+		}
+		return g + p + m;
+	}
+};
