@@ -1,0 +1,26 @@
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int countNicePairs(vector<int>& nums) {
+        long long ans = 0;
+        std::unordered_map<int, int> m;
+        for (int i : nums) {
+            int diff = getDiff(i);
+            if (m.count(diff)) ans += m[diff];
+            m[diff]++;
+        }
+        return ans % 1000000007;
+    }
+private:
+    int getDiff(int i) {
+        int j = 0, k = i;
+        while (k > 0) {
+            j = j * 10 + k % 10;
+            k /= 10;
+        }
+        return i - j;
+    }
+};
