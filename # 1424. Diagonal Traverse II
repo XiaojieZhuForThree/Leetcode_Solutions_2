@@ -1,0 +1,21 @@
+#include <vector>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+	vector<int> findDiagonalOrder(vector<vector<int>>& nums) {
+		vector<std::deque<int>> s;
+		for (int i = 0; i < size(nums); i++) {
+			for (int j = 0; j < size(nums[i]); j++) {
+				if (i + j >= size(s)) s.push_back(std::deque<int>());
+				s[i + j].push_front(nums[i][j]);
+			}
+		}
+		vector<int> ans;
+		for (auto q : s) {
+			for (int i : q) ans.push_back(i);
+		}
+		return ans;
+	}
+};
