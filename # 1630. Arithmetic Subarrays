@@ -1,0 +1,27 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+	vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) {
+		vector<bool> ans;
+		for (int i = 0; i < size(l); i++) {
+			ans.push_back(getAns(nums, l[i], r[i]));
+		}
+		return ans;
+	}
+private:
+	bool getAns(vector<int>& nums, int l, int r) {
+		if (r - l <= 1) return true;
+
+		vector<int> cur;
+		for (; l <= r; l++) cur.push_back(nums[l]);
+		sort(cur.begin(), cur.end());
+		int diff = cur[1] - cur[0];
+		for (int i = 2; i < size(cur); i++) {
+			if (cur[i] - cur[i - 1] != diff) return false;
+		}
+		return true;
+	}
+};
