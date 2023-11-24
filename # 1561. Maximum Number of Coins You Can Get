@@ -1,0 +1,18 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maxCoins(vector<int>& piles) {
+        sort(piles.begin(), piles.end());
+        int b = 0, i = size(piles) - 2;
+        int ans = 0;
+        while (b < i) {
+            ans += piles[i];
+            i -= 2;
+            b++;
+        }
+        return ans;
+    }
+};
