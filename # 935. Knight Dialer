@@ -1,0 +1,35 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	long long MOD = 1000000007;
+	vector<std::pair<int, int>> dirs = { {2, 1}, {2, -1}, {1, 2}, {1, -2}, {-2, 1}, {-2, -1}, {-1, 2}, {-1, -2} };
+	vector<vector<int>> d = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {-1, 0, -1} };
+	long long dp[4][3][5001];
+	int knightDialer(int n) {
+		long long ans = 0;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (d[i][j] == -1) continue;
+				ans += dfs(i, j, n - 1) % MOD;
+				ans %= MOD;
+			}
+		}
+		return ans;
+	}
+private:
+	long long dfs(int i, int j, int n) {
+		if (n == 0) return 1;
+		if (dp[i][j][n]) return dp[i][j][n];
+		long long ans = 0;
+		for (auto& p : dirs) {
+			int ni = i + p.first, nj = j + p.second;
+			if (ni < 0 || ni >= 4 || nj < 0 || nj >= 3 || d[ni][nj] == -1) continue;
+			ans += dfs(ni, nj, n - 1) % MOD;
+			ans %= MOD;
+		}
+		dp[i][j][n] = ans;
+		return ans;
+	}
+};
