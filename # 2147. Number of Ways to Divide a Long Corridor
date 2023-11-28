@@ -1,0 +1,36 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    int numberOfWays(string corridor) {
+        long long ans = 1;
+        int ss = 0, ts = 0;
+        for (char c : corridor) {
+            if (c == 'S') ts++;
+        }
+
+        if (ts == 0 || ts % 2 == 1) return 0;
+
+        for (int i = 0; i < size(corridor);) {
+            if (corridor[i] == 'S') {
+                ss++;
+                ts--;
+            }
+            if (ss == 2) {
+                int cnt = 1;
+                int j = i + 1;
+                while (j < size(corridor) && corridor[j] == 'P' && ts > 0) {
+                    cnt++;
+                    j++;
+                }
+                ans *= cnt;
+                ans %= 1000000007;
+                ss = 0;
+                i = j;
+            }
+            else i++;
+        }
+        return ans;
+    }
+};
