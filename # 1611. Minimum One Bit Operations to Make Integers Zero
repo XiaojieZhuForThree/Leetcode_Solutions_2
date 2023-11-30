@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int minimumOneBitOperations(int n) {
+        if (n <= 1) return n;
+        int i = 1;
+        while ((1 << (i + 1)) <= n) i++;
+        int base = 1 << i;
+        int nxt = 1 << (i - 1);
+        n -= base;
+        if (n < nxt) return base + minimumOneBitOperations(n + nxt);
+        return base + minimumOneBitOperations(n - nxt);
+    }
+};
