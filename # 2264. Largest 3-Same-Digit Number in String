@@ -1,0 +1,21 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	string largestGoodInteger(string num) {
+		string ans = "", cur = "";
+		char ch = '#';
+		for (char c : num) {
+			if (c != ch) {
+				cur = string(1, c);
+				ch = c;
+			}
+			else if (size(cur) < 3) {
+				cur += c;
+			}
+			if (size(cur) == 3 && cur > ans) ans = cur;
+		}
+		return ans;
+	}
+};
