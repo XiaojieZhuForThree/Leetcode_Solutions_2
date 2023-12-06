@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int totalMoney(int n) {
+        int ans = 0;
+        int s = 1, p = 1;
+        for (int i = 1; i <= n; i++) {
+            if (i % 7 == 1) {
+                ans += s;
+                p = s;
+                s++;
+            }
+            else ans += ++p;
+        }
+        return ans;
+    }
+};
