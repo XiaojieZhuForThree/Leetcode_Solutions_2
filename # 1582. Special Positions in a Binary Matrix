@@ -1,0 +1,28 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int numSpecial(vector<vector<int>>& mat) {
+        vector<int> cntr(size(mat), 0);
+        vector<int> cntc(size(mat[0]), 0);
+        int ans = 0;
+        for (int i = 0; i < size(mat); i++) {
+            for (int j = 0; j < size(mat[0]); j++) {
+                if (mat[i][j] == 0) continue;
+                cntr[i]++;
+                cntc[j]++;
+            }
+        }
+        for (int i = 0; i < size(mat); i++) {
+            if (cntr[i] != 1) continue;
+            for (int j = 0; j < size(mat[0]); j++) {
+                if (mat[i][j] == 1 && cntc[j] == 1) {
+                    ans++;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
