@@ -1,0 +1,46 @@
+#include <string>
+#include <unordered_map>
+#include <queue>
+#include <vector>
+
+using std::string;
+using std::vector;
+
+struct comp {
+	bool operator()(const std::pair<int, string>& p1, const std::pair<int, string>& p2) {
+		if (p1.first == p2.first) return p1.second > p2.second;
+		return p1.first < p2.first;
+	}
+};
+
+class FoodRatings {
+public:
+	std::unordered_map<string, int> r;
+	std::unordered_map<string, string> fc;
+	std::unordered_map<string, std::priority_queue<std::pair<int, string>, vector<std::pair<int, string>>, comp>> c;
+	FoodRatings(vector<string>& foods, vector<string>& cuisines, vector<int>& ratings) {
+		for (int i = 0; i < size(foods); i++) {
+			r[foods[i]] = ratings[i];
+			fc[foods[i]] = cuisines[i];
+			c[cuisines[i]].push({ ratings[i], foods[i] });
+		}
+	}
+
+	void changeRating(string food, int newRating) {
+		r[food] = newRating;
+		c[fc[food]].push({ newRating, food });
+	}
+
+	string highestRated(string cuisine) {
+		auto& pq = c[cuisine];
+		while (!pq.empty() && pq.top().first != r[pq.top().second]) pq.pop();
+		return pq.top().second;
+	}
+};
+
+/**
+ * Your FoodRatings object will be instantiated and called as such:
+ * FoodRatings* obj = new FoodRatings(foods, cuisines, ratings);
+ * obj->changeRating(food,newRating);
+ * string param_2 = obj->highestRated(cuisine);
+ */
