@@ -1,0 +1,15 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+	int buyChoco(vector<int>& prices, int money) {
+		int ans = money;
+		sort(prices.begin(), prices.end());
+		if (ans < prices[0]) return money;
+		ans -= prices[0];
+		if (ans < prices[1]) return money;
+		return ans - prices[1];
+	}
+};
