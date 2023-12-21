@@ -1,0 +1,17 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maxWidthOfVerticalArea(vector<vector<int>>& points) {
+        sort(points.begin(), points.end(), [&points](vector<int>& a, vector<int>& b) {
+            return a[0] < b[0];
+            });
+        int ans = 0;
+        for (int i = 1; i < size(points); i++) {
+            ans = std::max(ans, points[i][0] - points[i - 1][0]);
+        }
+        return ans;
+    }
+};
