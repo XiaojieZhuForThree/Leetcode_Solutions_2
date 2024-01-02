@@ -1,0 +1,25 @@
+#include <vector>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+	vector<vector<int>> findMatrix(vector<int>& nums) {
+		vector<vector<int>> ans;
+		std::unordered_set<int> seen;
+		while (!nums.empty()) {
+			vector<int> nxt, cur;
+			for (int i : nums) {
+				if (seen.count(i)) nxt.push_back(i);
+				else {
+					cur.push_back(i);
+					seen.insert(i);
+				}
+			}
+			ans.push_back(cur);
+			nums = nxt;
+			seen.clear();
+		}
+		return ans;
+	}
+};
