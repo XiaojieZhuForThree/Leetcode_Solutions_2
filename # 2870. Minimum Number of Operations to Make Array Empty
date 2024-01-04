@@ -1,0 +1,39 @@
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Helper {
+    std::unordered_map<int, int> dp;
+public:
+    Helper() {
+        dp[2] = 1;
+        dp[3] = 1;
+    }
+    int process(int i) {
+        if (i <= 1) return -1;
+        else if (dp.count(i)) return dp[i];
+        int val1 = process(i - 2), val2 = process(i - 3);
+        int ans;
+        if (val1 == -1 && val2 == -1) ans = -1;
+        else if (val1 == -1) ans = 1 + val2;
+        else if (val2 == -1) ans = 1 + val1;
+        else ans = 1 + std::min(val1, val2);
+        dp[i] = ans;
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        Helper h;
+        std::unordered_map<int, int> m;
+        for (int i : nums) m[i]++;
+        int ans = 0;
+        for (auto& p : m) {
+            if (h.process(p.second) == -1) return -1;
+            ans += h.process(p.second);
+        }
+        return ans;
+    }
+};
