@@ -1,0 +1,21 @@
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        std::unordered_map<int, std::unordered_map<long long, int>> dp;
+        int ans = 0;
+        for (int i = 0; i < size(nums); i++) {
+            for (int j = 0; j < i; j++) {
+                long long diff = (long long)(nums[i]) - nums[j];
+                int cnt = 0;
+                if (dp.count(j) && dp[j].count(diff)) cnt = dp[j][diff];
+                ans += cnt;
+                dp[i][diff] += cnt + 1;
+            }
+        }
+        return ans;
+    }
+};
