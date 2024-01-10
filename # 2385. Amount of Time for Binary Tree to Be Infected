@@ -1,0 +1,45 @@
+#include "TreeNode.h"
+#include <unordered_map>
+#include <deque>
+#include <unordered_set>
+
+class Solution {
+public:
+	int amountOfTime(TreeNode* root, int start) {
+		std::unordered_map<int, std::vector<int>> m;
+		dfs(root, m);
+		int ans = -1;
+		std::deque<int> dq;
+		std::unordered_set<int> seen;
+		dq.push_back(start);
+		seen.insert(start);
+		while (!dq.empty()) {
+			ans++;
+			for (int i = size(dq); i > 0; i--) {
+				int cur = dq.front();
+				dq.pop_front();
+				for (int j : m[cur]) {
+					if (seen.count(j)) continue;
+					seen.insert(j);
+					dq.push_back(j);
+				}
+			}
+		}
+		return ans;
+	}
+
+private:
+	void dfs(TreeNode* p, std::unordered_map<int, std::vector<int>>& m) {
+		if (!p) return;
+		if (p->left) {
+			m[p->val].push_back(p->left->val);
+			m[p->left->val].push_back(p->val);
+		}
+		if (p->right) {
+			m[p->val].push_back(p->right->val);
+			m[p->right->val].push_back(p->val);
+		}
+		dfs(p->left, m);
+		dfs(p->right, m);
+	}
+};
