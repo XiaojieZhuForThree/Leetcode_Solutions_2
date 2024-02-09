@@ -1,0 +1,31 @@
+#include <vector>
+#include <algorithm>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        std::unordered_map<int, vector<int>> dp;
+        vector<int> ans;
+        int cur = 0;
+        for (int i = 0; i < size(nums); i++) {
+            vector<int> cand = { nums[i] };
+            for (int j = 0; j < i; j++) {
+                if (nums[i] % nums[j] != 0) continue;
+                if (size(cand) >= size(dp[nums[j]]) + 1) continue;
+                vector<int> n(dp[nums[j]].begin(), dp[nums[j]].end());
+                n.push_back(nums[i]);
+                cand = n;
+
+            }
+            if (size(cand) > cur) {
+                cur = size(cand);
+                ans = cand;
+            }
+            dp[nums[i]] = cand;
+        }
+        return ans;
+    }
+};
