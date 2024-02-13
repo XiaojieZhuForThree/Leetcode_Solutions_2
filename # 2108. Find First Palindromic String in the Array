@@ -1,0 +1,22 @@
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+	string firstPalindrome(vector<string>& words) {
+		for (auto& s : words) {
+			if (isPali(s)) return s;
+		}
+		return "";
+	}
+private:
+	bool isPali(string& s) {
+		int l = 0, r = size(s) - 1;
+		while (l < r) {
+			if (s[l++] != s[r--]) return false;
+		}
+		return true;
+	}
+};
