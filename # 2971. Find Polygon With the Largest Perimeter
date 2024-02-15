@@ -1,0 +1,18 @@
+#include <vector>
+#include <algorithm>
+
+using std::vector;
+
+class Solution {
+public:
+	long long largestPerimeter(vector<int>& nums) {
+		long long s = 0;
+		for (int i : nums) s += i;
+		std::sort(nums.begin(), nums.end());
+		for (int i = size(nums) - 1; i >= 2; i--) {
+			if (s - nums[i] > nums[i]) return s;
+			s -= nums[i];
+		}
+		return -1;
+	}
+};
