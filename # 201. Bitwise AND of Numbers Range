@@ -1,0 +1,11 @@
+class Solution {
+public:
+	int rangeBitwiseAnd(int left, int right) {
+		int ans = 0;
+		for (int i = 30; i >= 0; i--) {
+			if ((right & (1 << i)) != (left & (1 << i))) break;
+			ans |= (right & (1 << i));
+		}
+		return ans;
+	}
+};
