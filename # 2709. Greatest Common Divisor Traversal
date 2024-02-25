@@ -1,0 +1,72 @@
+#include <vector>
+#include <unordered_map>
+#include <set>
+#include <unordered_set>
+using std::vector;
+
+struct UF {
+	std::unordered_map<int, int> par;
+
+	void merge(int a, int b) {
+		int pA = find(a), pB = find(b);
+		if (pA > pB) par[pB] = pA;
+		else par[pA] = pB;
+	}
+	int find(int a) {
+		if (!par.count(a)) par[a] = a;
+		if (par[a] == a) return a;
+		par[a] = find(par[a]);
+		return par[a];
+	}
+};
+
+class Solution {
+public:
+	bool canTraverseAllPairs(vector<int>& nums) {
+		if (size(nums) == 1) return true;
+		std::set<int> ded;
+		for (int i : nums) ded.insert(i);
+		nums = vector<int>(ded.begin(), ded.end());
+		if (nums[0] == 1) return false;
+		vector<int> primes = findAllPrimes(317);
+		UF uf;
+		for (int i : nums) {
+			vector<int> f = fac(i, primes);
+			for (int j : f) {
+				if (gcp(i, j) > 1) uf.merge(i, j);
+			}
+		}
+		std::unordered_set<int> s;
+		for (auto& p : uf.par) s.insert(uf.find(p.first));
+		return size(s) == 1;
+	}
+
+private:
+	vector<int> findAllPrimes(int n) {
+		vector<bool> isC(n + 1, false);
+		for (int i = 2; i * i <= n; i++) {
+			if (isC[i]) continue;
+			for (int j = 2 * i; j <= n; j += i) isC[j] = true;
+		}
+		vector<int> ans;
+		for (int i = 2; i <= n; i++) {
+			if (isC[i]) continue;
+			ans.push_back(i);
+		}
+		return ans;
+	}
+	vector<int> fac(int i, vector<int>& primes) {
+		vector<int> facts;
+		for (int p : primes)
+			if (i % p == 0) {
+				facts.push_back(p);
+				while (i % p == 0) i /= p;
+			}
+		if (i != 1) facts.push_back(i);
+		return facts;
+	}
+	int gcp(int a, int b) {
+		if (a % b == 0) return b;
+		return gcp(b, a % b);
+	}
+};
