@@ -1,0 +1,21 @@
+#include "TreeNode.h"
+#include <deque>
+
+class Solution {
+public:
+	int findBottomLeftValue(TreeNode* root) {
+		int cand = -1;
+		std::deque<TreeNode*> q;
+		if (root) q.push_back(root);
+		while (!q.empty()) {
+			cand = q.front()->val;
+			for (int i = size(q); i > 0; i--) {
+				TreeNode* cur = q.front();
+				q.pop_front();
+				if (cur->left) q.push_back(cur->left);
+				if (cur->right) q.push_back(cur->right);
+			}
+		}
+		return cand;
+	}
+};
