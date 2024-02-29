@@ -1,0 +1,28 @@
+#include "TreeNode.h"
+#include <deque>
+
+class Solution {
+public:
+    bool isEvenOddTree(TreeNode* root) {
+        std::deque<TreeNode*> q;
+        if (root) q.push_back(root);
+        bool odd = true;
+        while (!q.empty()) {
+            int prev = -1;
+            for (int i = size(q); i > 0; i--) {
+                TreeNode* cur = q.front();
+                q.pop_front();
+                if (odd && cur->val % 2 == 0) return false;
+                if (!odd && cur->val % 2 == 1) return false;
+                if (prev == -1) prev = cur->val;
+                else if (odd && prev >= cur->val) return false;
+                else if (!odd && prev <= cur->val) return false;
+                prev = cur->val;
+                if (cur->left) q.push_back(cur->left);
+                if (cur->right) q.push_back(cur->right);
+            }
+            odd = !odd;
+        }
+        return true;
+    }
+};
