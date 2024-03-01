@@ -1,0 +1,21 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+	string maximumOddBinaryNumber(string s) {
+		int o = 0, i = 0;
+		for (char c : s) {
+			if (c == '1') o++;
+		}
+		if (o == 0) return s;
+		s[size(s) - 1] = '1';
+		o--;
+		while (o > 0) {
+			s[i++] = '1';
+			o--;
+		}
+		for (; i < size(s) - 1; i++) s[i] = '0';
+		return s;
+	}
+};
