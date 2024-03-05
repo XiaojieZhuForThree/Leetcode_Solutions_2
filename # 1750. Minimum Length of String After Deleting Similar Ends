@@ -1,0 +1,17 @@
+#include <string>
+
+using std::string;
+
+class Solution {
+public:
+	int minimumLength(string s) {
+		int l = 0, r = size(s) - 1;
+		while (l < r) {
+			if (s[l] != s[r]) break;
+			char c = s[l];
+			while (l <= r && s[l] == c) l++;
+			while (r >= l && s[r] == c) r--;
+		}
+		return l > r ? 0 : r - l + 1;
+	}
+};
