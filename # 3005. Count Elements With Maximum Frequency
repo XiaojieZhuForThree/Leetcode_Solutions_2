@@ -1,0 +1,21 @@
+#include <vector>
+#include <unordered_map>
+
+using std::vector;
+
+class Solution {
+public:
+    int maxFrequencyElements(vector<int>& nums) {
+        std::unordered_map<int, int> m;
+        int f = 0;
+        for (int i : nums) {
+            m[i]++;
+            if (m[i] > f) f = m[i];
+        }
+        int ans = 0;
+        for (auto p : m) {
+            if (p.second == f) ans += f;
+        }
+        return ans;
+    }
+};
