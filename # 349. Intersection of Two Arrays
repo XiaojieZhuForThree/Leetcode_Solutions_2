@@ -1,0 +1,16 @@
+#include <unordered_set>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        std::unordered_set<int> a(nums1.begin(), nums1.end()), b(nums2.begin(), nums2.end());
+        vector<int> ans;
+        for (int i : a) {
+            if (b.count(i)) ans.push_back(i);
+        }
+        return ans;
+    }
+};
