@@ -1,0 +1,18 @@
+#include <vector>
+
+class Solution {
+public:
+	int pivotInteger(int n) {
+		std::vector<int> dp;
+		int s = 0;
+		dp.push_back(0);
+		for (int i = 1; i <= n; i++) {
+			s += i;
+			dp.push_back(s);
+		}
+		for (int i = 1; i <= n; i++) {
+			if (dp[i] == dp[n] - dp[i - 1]) return i;
+		}
+		return -1;
+	}
+};
