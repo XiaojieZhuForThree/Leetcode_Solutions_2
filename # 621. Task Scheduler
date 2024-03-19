@@ -1,0 +1,48 @@
+#include <vector>
+#include <unordered_map>
+
+using std::vector;
+
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        std::unordered_map<char, int> m;
+        int b = 0, tail = 0, car = 0;
+        n++;
+        for (char c : tasks) {
+            m[c]++;
+            b = std::max(b, m[c]);
+        }
+        for (auto& p : m) {
+            if (p.second == b) {
+                p.second--;
+                tail++;
+                if (p.second == 0) car++;
+            }
+        }
+        int ans = 0, of = 0;
+        while (car < size(m)) {
+            int cur = 0;
+            for (auto& p : m) {
+                if (p.second == 0) continue;
+                else {
+                    p.second--;
+                    cur++;
+                    if (p.second == 0) car++;
+                }
+            }
+            if (cur == 0) break;
+            ans += cur;
+            if (cur > n) of += cur - n;
+            else {
+                int slot = n - cur;
+                ans += slot;
+                if (of > 0) {
+                    ans -= std::min(slot, of);
+                    of -= std::min(slot, of);
+                }
+            }
+        }
+        return ans + tail;
+    }
+};
