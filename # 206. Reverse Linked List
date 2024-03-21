@@ -1,0 +1,17 @@
+#include "ListNode.h"
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        return helper(head).first;
+    }
+private:
+    std::pair<ListNode*, ListNode*> helper(ListNode* n) {
+        if (!n) return { nullptr, nullptr };
+        if (!n->next) return { n, n };
+        auto p = helper(n->next);
+        p.second->next = n;
+        n->next = nullptr;
+        return { p.first, n };
+    }
+};
