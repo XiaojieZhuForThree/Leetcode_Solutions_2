@@ -1,0 +1,21 @@
+#include <unordered_map>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int maxSubarrayLength(vector<int>& nums, int k) {
+        int l = 0, r = 0, ans = 0;
+        std::unordered_map<int, int> m;
+        for (; r < size(nums); r++) {
+            m[nums[r]]++;
+            while (m[nums[r]] > k) {
+                m[nums[l]]--;
+                l++;
+            }
+            ans = std::max(ans, r - l + 1);
+        }
+        return ans;
+    }
+};
