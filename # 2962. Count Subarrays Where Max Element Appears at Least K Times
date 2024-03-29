@@ -1,0 +1,32 @@
+#include <vector>
+#include <deque>
+
+using std::vector;
+
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        long long ans = 0;
+        int m = getM(nums);
+        std::deque<int> q;
+        int l = 0, r = size(nums) - 1;
+        for (int i = 0; i < size(nums); i++) {
+            if (nums[i] != m) continue;
+            q.push_back(i);
+            if (size(q) < k) continue;
+            if (size(q) > k) {
+                l = q.front() + 1;
+                q.pop_front();
+            }
+            int pl = q.front() - l + 1, pr = r - q.back() + 1;
+            ans += (long long)(pl)*pr;
+        }
+        return ans;
+    }
+private:
+    int getM(vector<int>& nums) {
+        int ans = 0;
+        for (int i : nums) ans = std::max(ans, i);
+        return ans;
+    }
+};
