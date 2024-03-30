@@ -1,0 +1,32 @@
+#include <vector>
+#include <unordered_map>
+using std::vector;
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        std::unordered_map<int, int> c, p;
+        int ans = 0, l = 0, t = 0;
+        for (int i = 0; i < size(nums); i++) {
+            c[nums[i]]++;
+            if (size(c) < k) continue;
+            else if (size(c) > k) {
+                while (size(c) > k) {
+                    c[nums[t]]--;
+                    if (c[nums[t]] == 0) c.erase(nums[t]);
+                    t++;
+                }
+                l = t;
+            }
+            while (size(c) == k) {
+                c[nums[t]]--;
+                if (c[nums[t]] == 0) {
+                    c[nums[t]] = 1;
+                    break;
+                }
+                t++;
+            }
+            ans += t - l + 1;
+        }
+        return ans;
+    }
+};
