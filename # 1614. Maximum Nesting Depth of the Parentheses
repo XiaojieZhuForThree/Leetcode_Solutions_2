@@ -1,0 +1,18 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    int maxDepth(string s) {
+        std::deque<char> q;
+        int ans = 0;
+        for (char c : s) {
+            if (c == '(') q.push_back(c);
+            else if (c == ')') q.pop_back();
+            int cur = size(q);
+            ans = std::max(ans, cur);
+        }
+        return ans;
+    }
+};
