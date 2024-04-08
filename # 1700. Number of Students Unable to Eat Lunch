@@ -1,0 +1,16 @@
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int countStudents(vector<int>& students, vector<int>& sandwiches) {
+        vector<int> v(2, 0);
+        for (int i : students) v[i]++;
+        for (int i : sandwiches) {
+            if (v[i] > 0) v[i]--;
+            else break;
+        }
+        return v[0] + v[1];
+    }
+};
