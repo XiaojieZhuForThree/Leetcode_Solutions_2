@@ -1,0 +1,15 @@
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int timeRequiredToBuy(vector<int>& tickets, int k) {
+        int ans = 0;
+        for (int i = 0; i < size(tickets); i++) {
+            ans += std::min(tickets[i], tickets[k]);
+            if (i > k && tickets[i] >= tickets[k]) ans--;
+        }
+        return ans;
+    }
+};
