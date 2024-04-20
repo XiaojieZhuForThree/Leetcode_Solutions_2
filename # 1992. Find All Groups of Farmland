@@ -1,0 +1,32 @@
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        vector<vector<int>> ans;
+        for (int i = 0; i < size(land); i++) {
+            for (int j = 0; j < size(land[0]); j++) {
+                if (land[i][j]) ans.push_back(dfs(land, i, j));
+            }
+        }
+        return ans;
+    }
+private:
+    vector<int> dfs(vector<vector<int>>& land, int i, int j) {
+        int u = i, d = i, l = j, r = j;
+        while (u >= 0 && land[u][j]) u--;
+        u++;
+        while (d < size(land) && land[d][j]) d++;
+        d--;
+        while (l >= 0 && land[i][l]) l--;
+        l++;
+        while (r < size(land[0]) && land[i][r]) r++;
+        r--;
+        for (int m = u; m <= d; m++) {
+            for (int n = l; n <= r; n++) land[m][n] = 0;
+        }
+        return { u, l, d, r };
+    }
+};
