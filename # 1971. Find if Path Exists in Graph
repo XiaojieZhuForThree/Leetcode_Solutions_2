@@ -1,0 +1,59 @@
+#include <vector>
+#include <deque>
+#include <unordered_map>
+#include <unordered_set>
+
+using std::vector;
+
+class Solution1 {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        std::deque<int> q;
+        std::unordered_map<int, vector<int>> m;
+        std::unordered_set<int> s;
+        for (auto& p : edges) {
+            m[p[0]].push_back(p[1]);
+            m[p[1]].push_back(p[0]);
+        }
+        return dfs(m, s, source, destination);
+    }
+
+private:
+    bool dfs(std::unordered_map<int, vector<int>>& m, std::unordered_set<int>& s, int i, int j) {
+        if (i == j) return true;
+        if (s.count(i)) return false;
+        bool ans = false;
+        s.insert(i);
+        for (int k : m[i]) {
+            if (s.count(k)) continue;
+            ans |= dfs(m, s, k, j);
+        }
+        return ans;
+    }
+};
+
+
+class Solution2 {
+    struct UF {
+        vector<int> v;
+        UF(int n) {
+            for (int i = 0; i < n; i++) v.push_back(i);
+        }
+        void merge(int i, int j) {
+            int pi = find(i);
+            int pj = find(j);
+            v[pi] = pj;
+        }
+        int find(int i) {
+            if (v[i] == i) return i;
+            v[i] = find(v[i]);
+            return v[i];
+        }
+    };
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        UF uf(n);
+        for (auto& e : edges) uf.merge(e[0], e[1]);
+        return uf.find(source) == uf.find(destination);
+    }
+};
