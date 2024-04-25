@@ -1,0 +1,23 @@
+#include <string>
+#include <unordered_map>
+using std::string;
+
+class Solution {
+public:
+    int longestIdealString(string s, int k) {
+        std::unordered_map<char, int> m;
+        int ans = 0;
+        for (char c : s) {
+            int v = 1;
+            for (char p = 'a'; p <= 'z'; p++) {
+                if (abs(p - c) > k) continue;
+                if (!m.count(p)) continue;
+                v = std::max(v, m[p] + 1);
+            }
+            if (m.count(c)) m[c] = std::max(m[c], v);
+            else m[c] = v;
+            ans = std::max(ans, m[c]);
+        }
+        return ans;
+    }
+};
