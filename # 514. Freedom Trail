@@ -1,0 +1,30 @@
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+using std::string;
+
+class Solution {
+public:
+	int findRotateSteps(string ring, string key) {
+		int ans = 0, r = size(ring), k = size(key);
+		std::unordered_map<char, std::vector<int>> m;
+		std::vector<std::vector<int>> dp(k, std::vector<int>(r, -1));
+		for (int i = 0; i < size(ring); i++) m[ring[i]].push_back(i);
+		return dfs(key, m, dp, r, 0, 0);
+	}
+
+private:
+	int dfs(string& key, std::unordered_map<char, std::vector<int>>& m, std::vector<std::vector<int>>& dp, int t, int i, int prev) {
+		if (i == size(key)) return 0;
+		if (dp[i][prev] != -1) return dp[i][prev];
+		int ans = INT_MAX;
+		for (int j : m[key[i]]) {
+			int c1 = abs(j - prev), c2 = t - c1;
+			int val = 1 + std::min(c1, c2);
+			ans = std::min(ans, val + dfs(key, m, dp, t, i + 1, j));
+		}
+		dp[i][prev] = ans;
+		return ans;
+	}
+};
