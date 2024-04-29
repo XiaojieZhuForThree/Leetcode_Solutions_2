@@ -1,0 +1,18 @@
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+	int minOperations(vector<int>& nums, int k) {
+		int a = 0, ans = 0;
+		for (int i : nums) a ^= i;
+		while (a != 0 || k != 0) {
+			int v1 = a % 2, v2 = k % 2;
+			if (v1 != v2) ans++;
+			a /= 2;
+			k /= 2;
+		}
+		return ans;
+	}
+};
