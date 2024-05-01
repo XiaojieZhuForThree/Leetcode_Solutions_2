@@ -1,0 +1,27 @@
+#include <string>
+
+using std::string;
+
+class Solution {
+public:
+	string reversePrefix(string word, char ch) {
+		for (int i = 0; i < size(word); i++) {
+			if (word[i] != ch) continue;
+			return helper(word, i);
+		}
+		return word;
+	}
+
+private:
+	string& helper(string& w, int i) {
+		int l = 0, r = i;
+		while (l < r) {
+			char c = w[l];
+			w[l] = w[r];
+			w[r] = c;
+			l++;
+			r--;
+		}
+		return w;
+	}
+};
