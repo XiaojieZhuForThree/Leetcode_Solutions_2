@@ -1,0 +1,22 @@
+#include "ListNode.h"
+#include <deque>
+
+class Solution {
+public:
+    ListNode* removeNodes(ListNode* head) {
+        std::deque<ListNode*> v;
+        while (head) {
+            while (!v.empty() && v.back()->val < head->val) v.pop_back();
+            v.push_back(head);
+            head = head->next;
+        }
+        ListNode* ans = v.front();
+        while (!v.empty()) {
+            ListNode* cur = v.front();
+            v.pop_front();
+            cur->next = nullptr;
+            if (!v.empty()) cur->next = v.front();
+        }
+        return ans;
+    }
+};
