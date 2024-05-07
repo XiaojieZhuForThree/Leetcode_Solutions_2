@@ -1,0 +1,24 @@
+#include "ListNode.h"
+class Solution {
+public:
+    bool car = false;
+    ListNode* doubleIt(ListNode* head) {
+        if (!head) return nullptr;
+        ListNode* n = doubleIt(head->next);
+        int d = head->val * 2;
+        if (n && car) {
+            d += n->val;
+            head->next = n->next;
+        }
+        else head->next = n;
+        head->val = d % 10;
+        if (d >= 10) {
+            car = true;
+            ListNode* h = new ListNode(d / 10);
+            h->next = head;
+            return h;
+        }
+        car = false;
+        return head;
+    }
+};
