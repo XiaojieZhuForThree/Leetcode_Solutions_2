@@ -1,0 +1,32 @@
+#include <vector>
+#include <algorithm>
+#include <queue>
+
+using std::vector;
+
+class Solution {
+public:
+    double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) {
+        vector<int> idx;
+        int n = size(quality);
+        for (int i = 0; i < n; i++) idx.push_back(i);
+        std::sort(idx.begin(), idx.end(), [&quality, &wage](int a, int b) {
+            return ((double)(wage[a]) / quality[a]) < ((double)(wage[b]) / quality[b]);
+            });
+        double ans = 0;
+        int sum = 0;
+        std::priority_queue<int> pq;
+        for (int i : idx) {
+            sum += quality[i];
+            pq.push(quality[i]);
+            double ratio = (double)(wage[i]) / quality[i];
+            if (size(pq) <= k) ans = sum * ratio;
+            else {
+                sum -= pq.top();
+                pq.pop();
+                ans = std::min(ans, sum * ratio);
+            }
+        }
+        return ans;
+    }
+};
