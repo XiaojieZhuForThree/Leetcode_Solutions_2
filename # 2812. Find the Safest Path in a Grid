@@ -1,0 +1,55 @@
+#include <vector>
+#include <deque>
+
+using std::vector;
+
+class Solution {
+public:
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int m = size(grid), n = size(grid[0]);
+        std::deque<std::pair<int, int>> q;
+        vector<std::pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) continue;
+                q.push_back({ i, j });
+                visited[i][j] = true;
+            }
+        }
+        int dist = 0;
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                auto cur = q.front();
+                q.pop_front();
+                grid[cur.first][cur.second] = dist;
+                for (auto& d : dirs) {
+                    int nx = cur.first + d.first;
+                    int ny = cur.second + d.second;
+                    if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                    if (visited[nx][ny]) continue;
+                    q.push_back({ nx, ny });
+                    visited[nx][ny] = true;
+                }
+            }
+            dist++;
+        }
+        q.push_back({ 0, 0 });
+        vector<vector<int>> ans(m, vector<int>(n, 0));
+        ans[0][0] = grid[0][0];
+        while (!q.empty()) {
+            auto cur = q.front();
+            q.pop_front();
+            for (auto& d : dirs) {
+                int nx = cur.first + d.first;
+                int ny = cur.second + d.second;
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                int target = std::min(ans[cur.first][cur.second], grid[nx][ny]);
+                if (ans[nx][ny] >= target) continue;
+                ans[nx][ny] = target;
+                q.push_back({ nx, ny });
+            }
+        }
+        return ans[m - 1][n - 1];
+    }
+};
