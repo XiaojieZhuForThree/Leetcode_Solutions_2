@@ -2,10 +2,6 @@
 
 using std::vector;
 
-#include <vector>
-
-using std::vector;
-
 class Solution {
 public:
     int subsetXORSum(vector<int>& nums) {
@@ -17,9 +13,8 @@ public:
 private:
     vector<int> helper(vector<int>& nums, int i) {
         if (i == size(nums)) return { 0 };
-        vector<int> n = helper(nums, i + 1);
         vector<int> ans;
-        for (int j : n) {
+        for (int j : helper(nums, i + 1)) {
             ans.push_back(j);
             ans.push_back(j ^ nums[i]);
         }
