@@ -2,28 +2,27 @@
 
 using std::vector;
 
+#include <vector>
+
+using std::vector;
+
 class Solution {
 public:
-	int subsetXORSum(vector<int>& nums) {
-		int ans = 0;
-		for (auto& v : helper(nums, 0)) {
-			int c = 0;
-			for (int i : v) c ^= i;
-			ans += c;
-		}
-		return ans;
-	}
+    int subsetXORSum(vector<int>& nums) {
+        int ans = 0;
+        for (int i : helper(nums, 0))  ans += i;
+        return ans;
+    }
 
 private:
-	vector<vector<int>> helper(vector<int>& nums, int i) {
-		if (i == size(nums)) return { {} };
-		vector<vector<int>> n = helper(nums, i + 1);
-		vector<vector<int>> ans;
-		for (vector<int>& v : n) ans.push_back(v);
-		for (vector<int> v : n) {
-			v.push_back(nums[i]);
-			ans.push_back(v);
-		}
-		return ans;
-	}
+    vector<int> helper(vector<int>& nums, int i) {
+        if (i == size(nums)) return { 0 };
+        vector<int> n = helper(nums, i + 1);
+        vector<int> ans;
+        for (int j : n) {
+            ans.push_back(j);
+            ans.push_back(j ^ nums[i]);
+        }
+        return ans;
+    }
 };
