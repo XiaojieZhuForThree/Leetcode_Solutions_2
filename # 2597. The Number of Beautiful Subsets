@@ -1,0 +1,30 @@
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+        return size(dfs(nums, 0, k));
+    }
+private:
+    vector<vector<int>> dfs(vector<int>& nums, int i, int k) {
+        if (i == size(nums) - 1) return { {nums[i]} };
+        vector<vector<int>> nxt = dfs(nums, i + 1, k);
+        vector<vector<int>> ans(nxt);
+        ans.push_back({ nums[i] });
+        for (vector<int> v : nxt) {
+            if (valid(nums[i], k, v)) {
+                v.push_back(nums[i]);
+                ans.push_back(v);
+            }
+        }
+        return ans;
+    }
+    int valid(int i, int k, vector<int>& v) {
+        for (int j : v) {
+            if (abs(i - j) == k) return false;
+        }
+        return true;
+    }
+};
