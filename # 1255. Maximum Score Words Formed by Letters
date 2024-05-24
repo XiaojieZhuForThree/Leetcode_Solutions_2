@@ -1,0 +1,39 @@
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+	int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+		std::unordered_map<char, int> cs;
+		for (char c : letters) cs[c]++;
+		return dfs(words, cs, score, 0, 0);
+	}
+private:
+	int dfs(vector<string>& words, std::unordered_map<char, int>& cs, vector<int>& score, int i, int s) {
+		if (i == size(words)) return s;
+		if (!canAdd(words[i], cs)) return dfs(words, cs, score, i + 1, s);
+		int val1 = dfs(words, cs, score, i + 1, s);
+		for (char c : words[i]) {
+			cs[c]--;
+			s += score[c - 'a'];
+		}
+		int val2 = dfs(words, cs, score, i + 1, s);
+		for (char c : words[i]) {
+			cs[c]++;
+			s -= score[c - 'a'];
+		}
+		return std::max(val1, val2);
+	}
+	bool canAdd(string& s, std::unordered_map<char, int>& cs) {
+		std::unordered_map<char, int> m;
+		for (char c : s) m[c]++;
+		for (auto p : m) {
+			if (cs[p.first] < p.second) return false;
+		}
+		return true;
+	}
+};
