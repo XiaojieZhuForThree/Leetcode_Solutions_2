@@ -1,0 +1,35 @@
+#include <vector>
+class Solution {
+public:
+    int checkRecord(int n) {
+        std::vector<long long> ans = dp(n);
+        long long res = 0;
+        for (long long i : ans) {
+            res += i;
+            res %= 1000000007;
+        }
+        return res;
+    }
+private:
+    std::vector<long long> dp(int n) {
+        // L1A0, L1A1, L2A0, L2A1, A, PA0, PA1
+        std::vector<long long> ans = { 1, 0, 0, 0, 1, 1, 0 };
+        for (int i = 2; i <= n; i++) {
+            long long l1a0 = ans[5];
+            long long l1a1 = (ans[4] + ans[6]) % 1000000007;
+            long long l2a0 = ans[0];
+            long long l2a1 = ans[1];
+            long long a = (ans[0] + ans[2] + ans[4]) % 1000000007;
+            long long pa0 = a;
+            long long pa1 = (ans[1] + ans[3] + ans[4] + ans[6]) % 1000000007;
+            ans[0] = l1a0;
+            ans[1] = l1a1;
+            ans[2] = l2a0;
+            ans[3] = l2a1;
+            ans[4] = a;
+            ans[5] = pa0;
+            ans[6] = pa1;
+        }
+        return ans;
+    }
+};
