@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int specialArray(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int l = 0, r = size(nums);
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            int cnt = 0;
+            for (int i : nums) {
+                if (i >= m) cnt++;
+            }
+            if (cnt == m) return m;
+            else if (cnt < m) r = m - 1;
+            else l = m + 1;
+        }
+        return -1;
+    }
+};
