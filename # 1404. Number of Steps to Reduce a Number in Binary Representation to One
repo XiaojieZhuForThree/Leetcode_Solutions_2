@@ -1,0 +1,23 @@
+#include <string>
+
+using std::string;
+
+class Solution {
+public:
+	int numSteps(string s) {
+		int car = 0, ans = 0, ptr = size(s) - 1;
+		while (!(ptr < 0 && car == 0)) {
+			int cur = car;
+			if (ptr >= 0) cur += (s[ptr--] - '0');
+			car = cur / 2;
+			cur %= 2;
+			if (cur == 0) ans++;
+			else if (ptr < 0 && car == 0) return ans;
+			else {
+				ans += 2;
+				car = 1;
+			}
+		}
+		return -1;
+	}
+};
