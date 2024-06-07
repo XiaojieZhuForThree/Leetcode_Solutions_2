@@ -1,0 +1,62 @@
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+struct Trie {
+    bool end;
+    Trie* nxt[26];
+};
+
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        Trie* t = new Trie();
+        for (auto& s : dictionary) {
+            Trie* ptr = t;
+            for (char c : s) {
+                if (!ptr->nxt[c - 'a']) ptr->nxt[c - 'a'] = new Trie();
+                ptr = ptr->nxt[c - 'a'];
+            }
+            ptr->end = true;
+        }
+        string ans;
+        int l = 0, r = 0;
+        while (r < size(sentence)) {
+            if (sentence[r] == ' ') {
+                string sub = sentence.substr(l, r - l);
+                Trie* ptr = t;
+                bool found = false;
+                for (int i = 0; i < size(sub); i++) {
+                    if (ptr->end) {
+                        found = true;
+                        ans += sub.substr(0, i);
+                        break;
+                    }
+                    else if (!ptr->nxt[sub[i] - 'a']) break;
+                    else ptr = ptr->nxt[sub[i] - 'a'];
+                }
+                if (!found) ans += sub;
+                ans += ' ';
+                l = r + 1;
+            }
+            r++;
+        }
+        if (l < size(sentence)) {
+            string sub = sentence.substr(l, r - l);
+            Trie* ptr = t;
+            bool found = false;
+            for (int i = 0; i < size(sub); i++) {
+                if (ptr->end) {
+                    found = true;
+                    ans += sub.substr(0, i);
+                    break;
+                }
+                else if (!ptr->nxt[sub[i] - 'a']) break;
+                else ptr = ptr->nxt[sub[i] - 'a'];
+            }
+            if (!found) ans += sub;
+        }
+        return ans;
+    }
+};
