@@ -24,39 +24,25 @@ public:
         int l = 0, r = 0;
         while (r < size(sentence)) {
             if (sentence[r] == ' ') {
-                string sub = sentence.substr(l, r - l);
-                Trie* ptr = t;
-                bool found = false;
-                for (int i = 0; i < size(sub); i++) {
-                    if (ptr->end) {
-                        found = true;
-                        ans += sub.substr(0, i);
-                        break;
-                    }
-                    else if (!ptr->nxt[sub[i] - 'a']) break;
-                    else ptr = ptr->nxt[sub[i] - 'a'];
-                }
-                if (!found) ans += sub;
+                ans += helper(t, sentence.substr(l, r - l));
                 ans += ' ';
                 l = r + 1;
             }
             r++;
         }
-        if (l < size(sentence)) {
-            string sub = sentence.substr(l, r - l);
-            Trie* ptr = t;
-            bool found = false;
-            for (int i = 0; i < size(sub); i++) {
-                if (ptr->end) {
-                    found = true;
-                    ans += sub.substr(0, i);
-                    break;
-                }
-                else if (!ptr->nxt[sub[i] - 'a']) break;
-                else ptr = ptr->nxt[sub[i] - 'a'];
-            }
-            if (!found) ans += sub;
-        }
+        if (l < size(sentence)) ans += helper(t, sentence.substr(l, r - l));
         return ans;
+    }
+
+private:
+    string helper(Trie* t, string s) {
+        Trie* ptr = t;
+        bool found = false;
+        for (int i = 0; i < size(s); i++) {
+            if (ptr->end) return s.substr(0, i);
+            else if (!ptr->nxt[s[i] - 'a']) break;
+            else ptr = ptr->nxt[s[i] - 'a'];
+        }
+        return s;
     }
 };
