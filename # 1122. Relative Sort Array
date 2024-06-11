@@ -1,0 +1,23 @@
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
+        std::unordered_map<int, int> m;
+        for (int i = 0; i < size(arr2); i++) m[arr2[i]] = i;
+        vector<int> v;
+        for (int i = 0; i < size(arr1); i++) v.push_back(i);
+        sort(v.begin(), v.end(), [&m, arr1](int a, int b) {
+            int i = arr1[a], j = arr1[b];
+            if (m.count(i) and m.count(j)) return m[i] < m[j];
+            else if (m.count(i)) return true;
+            else if (m.count(j)) return false;
+            else return i < j;
+            });
+        for (int i = 0; i < size(v); i++) v[i] = arr1[v[i]];
+        return v;
+    }
+};
