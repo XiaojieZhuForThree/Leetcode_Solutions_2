@@ -1,0 +1,30 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+	int minDays(vector<int>& bloomDay, int m, int k) {
+		int l = 1, r = 1000000000;
+		while (l < r) {
+			int c = l + (r - l) / 2;
+			if (valid(bloomDay, m, k, c)) r = c;
+			else l = c + 1;
+		}
+		if (!valid(bloomDay, m, k, l)) return -1;
+		return l;
+	}
+
+private:
+	bool valid(vector<int>& b, int m, int k, int c) {
+		int v = 0, l = 0, r = 0;
+		while (l < size(b)) {
+			while (l < size(b) && b[l] > c) l++;
+			r = l;
+			while (r < size(b) && b[r] <= c) r++;
+			int s = r - l;
+			v += s / k;
+			l = r;
+		}
+		return v >= m;
+	}
+};
