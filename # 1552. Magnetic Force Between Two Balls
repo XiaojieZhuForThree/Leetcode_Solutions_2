@@ -1,0 +1,28 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maxDistance(vector<int>& position, int m) {
+        sort(position.begin(), position.end());
+        int l = 1, r = position[size(position) - 1];
+        while (l < r) {
+            int c = l + (r - l) / 2;
+            if (valid(position, c, m)) l = c + 1;
+            else r = c;
+        }
+        return valid(position, l, m) ? l : l - 1;
+    }
+private:
+    bool valid(vector<int>& position, int c, int m) {
+        int v = 1, l = 0, r = 1;
+        for (; r < size(position); r++) {
+            if (position[r] - position[l] >= c) {
+                v++;
+                l = r;
+            }
+        }
+        return v >= m;
+    }
+};
