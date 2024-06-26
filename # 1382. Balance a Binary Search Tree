@@ -1,0 +1,27 @@
+#include "TreeNode.h"
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    TreeNode* balanceBST(TreeNode* root) {
+        vector<TreeNode*> v;
+        helper(root, v);
+        return rebuild(v, 0, size(v) - 1);
+    }
+private:
+    void helper(TreeNode* node, vector<TreeNode*>& v) {
+        if (!node) return;
+        helper(node->left, v);
+        v.push_back(node);
+        helper(node->right, v);
+    }
+    TreeNode* rebuild(vector<TreeNode*>& v, int l, int r) {
+        if (l > r) return nullptr;
+        int m = l + (r - l) / 2;
+        TreeNode* h = v[m];
+        h->left = rebuild(v, l, m - 1);
+        h->right = rebuild(v, m + 1, r);
+        return h;
+    }
+};
