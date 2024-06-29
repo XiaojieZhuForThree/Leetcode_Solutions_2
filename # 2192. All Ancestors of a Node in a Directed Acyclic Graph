@@ -1,0 +1,38 @@
+#include <vector>
+#include <unordered_map>
+#include <set>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        std::unordered_map<int, vector<int>> m;
+        std::unordered_map<int, int> ind;
+        for (int i = 0; i < n; i++) ind[i] = 0;
+        vector<std::set<int>> ans(n);
+        for (auto& e : edges) {
+            m[e[0]].push_back(e[1]);
+            ind[e[1]]++;
+        }
+        std::deque<int> q;
+        for (auto& p : ind) {
+            if (p.second == 0) q.push_back(p.first);
+        }
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                int cur = q.front();
+                q.pop_front();
+                for (int j : m[cur]) {
+                    for (int k : ans[cur]) ans[j].insert(k);
+                    ans[j].insert(cur);
+                    ind[j]--;
+                    if (ind[j] == 0) q.push_back(j);
+                }
+            }
+        }
+        vector<vector<int>> res;
+        for (auto& s : ans) res.push_back(vector<int>(s.begin(), s.end()));
+        return res;
+    }
+};
