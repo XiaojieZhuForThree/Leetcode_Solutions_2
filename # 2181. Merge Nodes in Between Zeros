@@ -1,0 +1,20 @@
+#include "ListNode.h"
+class Solution {
+public:
+    ListNode* mergeNodes(ListNode* head) {
+        ListNode* p = new ListNode(-1), * t = p;
+        int cur = 0;
+        while (head) {
+            if (head->val == 0) {
+                if (cur != 0) {
+                    t->next = new ListNode(cur);
+                    t = t->next;
+                    cur = 0;
+                }
+            }
+            else cur += head->val;
+            head = head->next;
+        }
+        return p->next;
+    }
+};
