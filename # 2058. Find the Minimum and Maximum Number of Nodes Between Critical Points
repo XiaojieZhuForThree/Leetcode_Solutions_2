@@ -1,0 +1,27 @@
+#include "ListNode.h"
+#include <vector>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> nodesBetweenCriticalPoints(ListNode* head) {
+        vector<int> ps;
+        std::deque<int> vs;
+        int cur = -1;
+        while (head) {
+            vs.push_back(head->val);
+            head = head->next;
+            cur++;
+            if (size(vs) > 3) vs.pop_front();
+            if (size(vs) < 3) continue;
+            if (vs[0] < vs[1] && vs[2] < vs[1]) ps.push_back(cur);
+            else if (vs[0] > vs[1] && vs[2] > vs[1]) ps.push_back(cur);
+        }
+        if (size(ps) < 2) return { -1, -1 };
+        int val2 = ps[size(ps) - 1] - ps[0];
+        int val1 = val2;
+        for (int i = 1; i < size(ps); i++) val1 = std::min(val1, ps[i] - ps[i - 1]);
+        return { val1, val2 };
+    }
+};
