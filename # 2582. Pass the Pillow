@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int passThePillow(int n, int time) {
+        int d = n - 1;
+        int s = time / d, m = time % d;
+        if (s % 2 == 0) {
+            return 1 + m;
+        }
+        return n - m;
+    }
+};
