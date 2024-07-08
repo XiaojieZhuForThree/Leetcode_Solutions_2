@@ -1,0 +1,23 @@
+#include <vector>
+
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        std::vector<bool> checked(n + 1, false);
+        int cnt = 0, ans = 1;
+        while (cnt < n - 1) {
+            for (int i = 0; i < k - 1;) {
+                ans++;
+                ans %= n;
+                if (!checked[ans]) i++;
+            }
+            checked[ans] = true;
+            cnt++;
+            while (checked[ans]) {
+                ans++;
+                ans %= n;
+            }
+        }
+        return ans == 0 ? n : ans;
+    }
+};
