@@ -1,0 +1,15 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    double averageWaitingTime(vector<vector<int>>& customers) {
+        long long wt = 0, ft = 0;
+        for (auto& c : customers) {
+            long long s = (long long)c[0], e = (long long)c[1];
+            wt += (std::max(ft, s) + e - s);
+            ft = std::max(ft, s) + e;
+        }
+        return (double)(wt) / size(customers);
+    }
+};
