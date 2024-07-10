@@ -1,0 +1,17 @@
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    int minOperations(vector<string>& logs) {
+        int d = 0;
+        for (string& s : logs) {
+            if (s == "../") d = std::max(0, d - 1);
+            else if (s == "./") continue;
+            else d++;
+        }
+        return d;
+    }
+};
