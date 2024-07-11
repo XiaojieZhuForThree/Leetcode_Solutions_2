@@ -1,0 +1,26 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    string reverseParentheses(string s) {
+        std::deque<char> q;
+        for (char c : s) {
+            if (c == ')') {
+                string r = "";
+                while (!q.empty() && q.back() != '(') {
+                    char e = q.back();
+                    q.pop_back();
+                    r += e;
+                }
+                if (!q.empty()) q.pop_back();
+                for (char c : r) q.push_back(c);
+            }
+            else q.push_back(c);
+        }
+        string ans = "";
+        for (char c : q) ans += c;
+        return ans;
+    }
+};
