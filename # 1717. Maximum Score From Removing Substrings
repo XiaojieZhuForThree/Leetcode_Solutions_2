@@ -1,0 +1,49 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    int maximumGain(string s, int x, int y) {
+        int ans = 0;
+        std::deque<char> q;
+        for (char c : s) {
+            if (c == 'a' && x < y) {
+                if (!q.empty() && q.back() == 'b') {
+                    ans += y;
+                    q.pop_back();
+                }
+                else q.push_back(c);
+            }
+            else if (c == 'b' && x >= y) {
+                if (!q.empty() && q.back() == 'a') {
+                    ans += x;
+                    q.pop_back();
+                }
+                else q.push_back(c);
+            }
+            else q.push_back(c);
+        }
+        string rem = "";
+        for (char c : q) rem += c;
+        q.clear();
+        for (char c : rem) {
+            if (c == 'b') {
+                if (!q.empty() && q.back() == 'a') {
+                    ans += x;
+                    q.pop_back();
+                }
+                else q.push_back(c);
+            }
+            else if (c == 'a') {
+                if (!q.empty() && q.back() == 'b') {
+                    ans += y;
+                    q.pop_back();
+                }
+                else q.push_back(c);
+            }
+            else q.push_back(c);
+        }
+        return ans;
+    }
+};
