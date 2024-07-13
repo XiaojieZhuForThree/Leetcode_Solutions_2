@@ -1,0 +1,61 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <deque>
+using std::string;
+using std::vector;
+
+struct State {
+    int i;
+    int p;
+    int h;
+    char d;
+    State(int ii, int pi, int hi, char di) {
+        i = ii;
+        p = pi;
+        h = hi;
+        d = di;
+    };
+};
+
+class Solution {
+public:
+    vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, string directions) {
+        vector<State> v;
+        for (int i = 0; i < size(positions); i++) {
+            v.push_back(State(i, positions[i], healths[i], directions[i]));
+        }
+        std::sort(v.begin(), v.end(), [](State& a, State& b) {
+            if (a.p == b.p) return a.d == 'R';
+            return a.p < b.p;
+            });
+        std::deque<State> q;
+        for (auto& s : v) {
+            if (s.d == 'R') q.push_back(s);
+            else {
+                while (!q.empty() && q.back().d == 'R') {
+                    State& p = q.back();
+                    q.pop_back();
+                    if (p.h == s.h) {
+                        s.h = 0;
+                        break;
+                    }
+                    else if (p.h < s.h) s.h--;
+                    else {
+                        p.h--;
+                        q.push_back(p);
+                        s.h = 0;
+                        break;
+                    }
+                }
+                if (s.h > 0) q.push_back(s);
+            }
+        }
+        sort(q.begin(), q.end(), [](State& a, State& b) {
+            return a.i < b.i;
+            });
+        vector<int> ans;
+        for (auto& s : q) ans.push_back(s.h);
+        return ans;
+    }
+};
