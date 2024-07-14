@@ -1,0 +1,59 @@
+#include <string>
+#include <bitset>
+#include <map>
+using std::string;
+
+class Solution {
+public:
+    string countOfAtoms(string formula) {
+        string ans = "";
+        for (auto& p : helper(formula)) {
+            ans += p.first;
+            if (p.second > 1) ans += std::to_string(p.second);
+        }
+        return ans;
+    }
+
+private:
+    std::map<string, int> helper(string s) {
+        int i = 0, j = 0;
+        std::map<string, int> m;
+        for (; i < size(s); ) {
+            if (isupper(s[i])) {
+                int j = i + 1;
+                while (j < size(s) && islower(s[j])) j++;
+                string ele = s.substr(i, j - i);
+                if (j >= size(s) || !isdigit(s[j])) m[ele]++;
+                else {
+                    int k = j;
+                    while (j < size(s) && isdigit(s[j])) j++;
+                    int cnt = stoi(s.substr(k, j - k));
+                    m[ele] += cnt;
+                }
+                i = j;
+            }
+            else if (s[i] == '(') {
+                int l = 1;
+                j = i + 1;
+                while (l > 0) {
+                    if (s[j] == '(') l++;
+                    else if (s[j] == ')') l--;
+                    j++;
+                }
+                auto rec = helper(s.substr(i + 1, j - i - 2));
+                int mult = 0;
+                if (j >= size(s) || !isdigit(s[j])) {
+                    mult = 1;
+                }
+                else {
+                    int k = j;
+                    while (j < size(s) && isdigit(s[j])) j++;
+                    mult = stoi(s.substr(k, j - k));
+                }
+                for (auto& p : rec) m[p.first] += p.second * mult;
+                i = j;
+            }
+        }
+        return m;
+    }
+};
