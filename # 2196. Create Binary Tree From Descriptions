@@ -1,0 +1,39 @@
+#include <unordered_map>
+#include <deque>
+#include "TreeNode.h"
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
+        std::deque<TreeNode*> q;
+        std::unordered_map<int, int> ind;
+        std::unordered_map<int, vector<std::pair<int, int>>> m;
+        for (auto& d : descriptions) {
+            int p = d[0], c = d[1], l = d[2];
+            m[p].push_back({ c, l });
+            if (!ind.count(p)) ind[p] = 0;
+            ind[c]++;
+        }
+        TreeNode* ans = nullptr;
+        for (auto& p : ind) {
+            if (p.second == 0) {
+                ans = new TreeNode(p.first);
+                q.push_back(ans);
+            }
+        }
+        while (!q.empty()) {
+            TreeNode* cur = q.front();
+            q.pop_front();
+            if (!m.count(cur->val)) continue;
+            for (auto& p : m[cur->val]) {
+                TreeNode* c = new TreeNode(p.first);
+                if (p.second == 1) cur->left = c;
+                else cur->right = c;
+                q.push_back(c);
+            }
+        }
+        return ans;
+    }
+};
