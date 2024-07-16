@@ -1,0 +1,42 @@
+#include <string>
+#include "TreeNode.h"
+
+class Solution {
+public:
+    std::string u = "", v = "";
+    TreeNode* n = nullptr;
+    std::string getDirections(TreeNode* root, int startValue, int destValue) {
+        find(root, startValue, destValue);
+        std::string l = "", r = "";
+        getU(n, startValue, l);
+        getD(n, destValue, r);
+        return u + v;
+    }
+private:
+    std::pair<bool, bool> find(TreeNode* node, int s, int d) {
+        if (!node) return { false, false };
+        std::pair<bool, bool> l = find(node->left, s, d), r = find(node->right, s, d);
+        bool fs = l.first || r.first || node->val == s;
+        bool fd = l.second || r.second || node->val == d;
+        if (fs && fd && !n) n = node;
+        return { fs, fd };
+    }
+    void getU(TreeNode* node, int s, std::string& cur) {
+        if (!node) return;
+        if (node->val == s) u = cur;
+        cur += 'U';
+        getU(node->left, s, cur);
+        getU(node->right, s, cur);
+        cur.pop_back();
+    }
+    void getD(TreeNode* node, int d, std::string& cur) {
+        if (!node) return;
+        if (node->val == d) v = cur;
+        cur += 'L';
+        getD(node->left, d, cur);
+        cur.pop_back();
+        cur += 'R';
+        getD(node->right, d, cur);
+        cur.pop_back();
+    }
+};
