@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+#include <unordered_map>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        vector<vector<long long>> v(26, vector<long long>(26, -1));
+        for (int i = 0; i < 26; i++) v[i][i] = 0;
+        helper(original, changed, cost, v);
+        long long ans = 0;
+        for (int i = 0; i < size(source); i++) {
+            if (v[source[i] - 'a'][target[i] - 'a'] == -1) return -1;
+            ans += v[source[i] - 'a'][target[i] - 'a'];
+        }
+        return ans;
+    }
+private:
+    void helper(
+        vector<char>& original,
+        vector<char>& changed,
+        vector<int>& cost,
+        vector<vector<long long>>& v) {
+        std::unordered_map<char, vector<std::pair<char, int>>> m;
+        for (int i = 0; i < size(original); i++) m[original[i]].push_back({ changed[i], cost[i] });
+        for (char c = 'a'; c <= 'z'; c++) {
+            dfs(c, c, 0, v, m);
+        }
+        return;
+    }
+    void dfs(
+        char s,
+        char c,
+        long long cur,
+        vector<vector<long long>>& v,
+        std::unordered_map<char, vector<std::pair<char, int>>>& m) {
+        for (auto& p : m[c]) {
+            int i = s - 'a', j = p.first - 'a';
+            if (v[i][j] == -1 || v[i][j] > cur + p.second) {
+                v[i][j] = cur + p.second;
+                dfs(s, p.first, cur + p.second, v, m);
+            }
+        }
+        return;
+    }
+};
