@@ -1,0 +1,70 @@
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+#include <deque>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
+        vector<int> cand;
+        std::unordered_map<int, vector<int>> m;
+        vector<vector<bool>> dp(n + 1, vector<bool>(n + 1, false));
+        for (auto& e : edges) {
+            m[e[0]].push_back(e[1]);
+            m[e[1]].push_back(e[0]);
+        }
+        helper(m, cand, 1, n);
+        sort(cand.begin(), cand.end());
+        vector<int> ans;
+        int val1 = cand[0];
+        int val2 = val1 + 2;
+        ans.push_back(getT(val1, time, change));
+        ans.push_back(getT(val2, time, change));
+        for (int i : cand) {
+            if (i != val1) {
+                ans.push_back(getT(i, time, change));
+                break;
+            }
+        }
+        sort(ans.begin(), ans.end());
+        return ans[1];
+    }
+private:
+    void helper(std::unordered_map<int, vector<int>>& m,
+        vector<int>& cand,
+        int s,
+        int e) {
+        std::deque<int> q;
+        q.push_back(s);
+        std::unordered_set<int> p, l;
+        int cnt = 0;
+        while (!q.empty()) {
+            l.clear();
+            for (int i = size(q); i > 0; i--) {
+                int cur = q.front();
+                q.pop_front();
+                l.insert(cur);
+                if (cur == e) cand.push_back(cnt);
+                for (int j : m[cur]) {
+                    if (p.count(j)) continue;
+                    q.push_back(j);
+                }
+            }
+            for (int i : l) p.insert(i);
+            cnt++;
+        }
+        return;
+    }
+    int getT(int v, int t, int c) {
+        int ans = 0;
+        for (int i = 0; i < v - 1; i++) {
+            ans += t;
+            int r = ans / c, m = ans % c;
+            if (r % 2 == 0) continue;
+            ans += c - m;
+        }
+        return ans + t;
+    }
+};
