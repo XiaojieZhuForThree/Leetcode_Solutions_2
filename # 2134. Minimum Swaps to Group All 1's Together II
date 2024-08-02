@@ -1,0 +1,24 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+        int cnt = 0;
+        for (int i : nums) cnt += i;
+        int s = 0, e = 0, cur = 0, ans = cnt;
+        for (; e < cnt; e++) {
+            cur += nums[e];
+        }
+        e--;
+        ans = cnt - cur;
+        while (s < size(nums)) {
+            cur -= nums[s];
+            s++;
+            e++;
+            cur += nums[e % size(nums)];
+            ans = std::min(ans, cnt - cur);
+        }
+        return ans;
+    }
+};
