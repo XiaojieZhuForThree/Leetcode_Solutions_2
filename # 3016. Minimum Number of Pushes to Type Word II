@@ -1,0 +1,24 @@
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+using std::string;
+
+class Solution {
+public:
+    int minimumPushes(string word) {
+        std::unordered_map<char, int> m;
+        for (char c : word) m[c]++;
+        std::vector<char> v;
+        for (auto& p : m) v.push_back(p.first);
+        std::sort(v.begin(), v.end(), [&m](char a, char b) {
+            return m[a] > m[b];
+            });
+        int cur = 0, ans = 0;
+        for (char c : v) {
+            ans += ((cur / 8) + 1) * m[c];
+            cur++;
+        }
+        return ans;
+    }
+};
