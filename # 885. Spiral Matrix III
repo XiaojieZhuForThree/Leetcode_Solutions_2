@@ -1,0 +1,44 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        int cnt = 1, leg = 2;
+        vector<vector<int>> ans;
+        ans.push_back({ rStart, cStart });
+        while (cnt < rows * cols) {
+            for (int i = 1; i < leg; i++) {
+                cStart += 1;
+                if (rStart >= 0 && cStart >= 0 && rStart < rows && cStart < cols) {
+                    ans.push_back({ rStart, cStart });
+                    cnt++;
+                }
+            }
+            for (int i = 1; i < leg; i++) {
+                rStart += 1;
+                if (rStart >= 0 && cStart >= 0 && rStart < rows && cStart < cols) {
+                    ans.push_back({ rStart, cStart });
+                    cnt++;
+                }
+            }
+            leg++;
+            for (int i = 1; i < leg; i++) {
+                cStart -= 1;
+                if (rStart >= 0 && cStart >= 0 && rStart < rows && cStart < cols) {
+                    ans.push_back({ rStart, cStart });
+                    cnt++;
+                }
+            }
+            for (int i = 1; i < leg; i++) {
+                rStart -= 1;
+                if (rStart >= 0 && cStart >= 0 && rStart < rows && cStart < cols) {
+                    ans.push_back({ rStart, cStart });
+                    cnt++;
+                }
+            }
+            leg++;
+        }
+        return ans;
+    }
+};
