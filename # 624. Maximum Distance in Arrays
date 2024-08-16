@@ -1,0 +1,23 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& arrays) {
+        vector<std::pair<int, int>> v;
+        for (auto& a : arrays) v.push_back({ a[0], a[size(a) - 1] });
+        sort(v.begin(), v.end(), [](std::pair<int, int> a, std::pair<int, int> b) {
+            if (a.first == b.first) return a.second < b.second;
+            return a.first < b.first;
+            });
+        int ans = 0, l = v[0].first, r = v[0].second;
+        for (int i = 1; i < size(v); i++) {
+            auto& p = v[i];
+            int cand1 = abs(p.second - l), cand2 = abs(r - p.first);
+            ans = std::max(ans, std::max(cand1, cand2));
+            r = std::max(r, p.second);
+        }
+        return ans;
+    }
+};
