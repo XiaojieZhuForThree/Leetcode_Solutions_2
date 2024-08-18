@@ -1,0 +1,30 @@
+#include <queue>
+#include <unordered_set>
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if (n == 1) return 1;
+        std::priority_queue<long long, std::vector<long long>, std::greater<long long>> pq;
+        std::unordered_set<long long> seen;
+        pq.push(1);
+        seen.insert(1);
+        for (int i = 0; i < n; i++) {
+            long long cur = pq.top();
+            pq.pop();
+            if (i == n - 1) return cur;
+            if (!seen.count(cur * 2)) {
+                pq.push(cur * 2);
+                seen.insert(cur * 2);
+            }
+            if (!seen.count(cur * 3)) {
+                pq.push(cur * 3);
+                seen.insert(cur * 3);
+            }
+            if (!seen.count(cur * 5)) {
+                pq.push(cur * 5);
+                seen.insert(cur * 5);
+            }
+        }
+        return -1;
+    }
+};
