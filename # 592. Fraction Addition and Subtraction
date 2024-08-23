@@ -1,0 +1,66 @@
+#include <string>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+    int gcd(int a, int b) {
+        if (b == 0)
+            return a;
+        return gcd(b, a % b);
+
+    }
+    string fractionAddition(string exp) {
+        std::vector<int>num, den;
+        int out = 1;
+        int n = exp.length();
+        for (int i = 0; i < n; i++) {
+            if (exp[i] == '-') {
+                out = 0;
+                i++;
+            }
+            else if (exp[i] == '+') {
+                out = 1;
+                i++;
+            }
+            string a = "";
+            while (i < n && exp[i] != '/') {
+                a += exp[i];
+                i++;
+            }
+            if (out == 0) {
+                num.push_back(-stoi(a));
+            }
+            else {
+                num.push_back(stoi(a));
+            }
+            if (exp[i] == '/') {
+                i++;
+            }
+            a = "";
+            while (i < n && exp[i] != '-' && exp[i] != '+') {
+                a += exp[i];
+                i++;
+            }
+            den.push_back(stoi(a));
+            i--;
+        }
+        int proden = 1;
+        for (int i = 0; i < den.size(); i++) {
+            proden *= den[i];
+        }
+        int sum = 0;
+        for (int i = 0; i < den.size(); i++) {
+            int a = proden / den[i];
+            sum += (num[i] * a);
+        }
+        if (abs(sum) % proden == 0) {
+            return std::to_string(sum / proden) + "/1";
+        }
+        int a = gcd(sum, proden);
+        if (proden < 0 || sum < 0) {
+            return "-" + std::to_string(abs(sum / a)) + "/" + std::to_string(abs(proden / a));
+        }
+        return std::to_string(sum / a) + "/" + std::to_string(proden / a);
+    }
+};
