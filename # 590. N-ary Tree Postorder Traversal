@@ -1,0 +1,14 @@
+#include "Node.h"
+
+class Solution {
+public:
+    vector<int> postorder(Node* root) {
+        if (!root) return {};
+        vector<int> ans;
+        for (auto* c : root->children) {
+            for (int i : postorder(c)) ans.push_back(i);
+        }
+        ans.push_back(root->val);
+        return ans;
+    }
+};
