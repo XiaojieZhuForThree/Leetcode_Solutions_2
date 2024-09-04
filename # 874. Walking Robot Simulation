@@ -1,0 +1,49 @@
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+
+using std::vector;
+using std::unordered_map;
+using std::unordered_set;
+
+class Solution {
+public:
+    int ans = 0, x = 0, y = 0, d = 0;
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        unordered_map<int, unordered_set<int>> o;
+        for (auto& p : obstacles) o[p[0]].insert(p[1]);
+        for (int i : commands) {
+            if (i == -2) d = (d - 1 + 4) % 4;
+            else if (i == -1) d = (d + 1 + 4) % 4;
+            else move(i, o);
+        }
+        return ans;
+    }
+private:
+    void move(int i, unordered_map<int, unordered_set<int>>& o) {
+        if (d == 0) {
+            for (int j = 1; j <= i && !(o.count(x) && o[x].count(y + 1)); j++) {
+                y++;
+                ans = std::max(ans, x * x + y * y);
+            }
+        }
+        else if (d == 1) {
+            for (int j = 1; j <= i && !(o.count(x + 1) && o[x + 1].count(y)); j++) {
+                x++;
+                ans = std::max(ans, x * x + y * y);
+            }
+        }
+        else if (d == 2) {
+            for (int j = 1; j <= i && !(o.count(x) && o[x].count(y - 1)); j++) {
+                y--;
+                ans = std::max(ans, x * x + y * y);
+            }
+        }
+        else {
+            for (int j = 1; j <= i && !(o.count(x - 1) && o[x - 1].count(y)); j++) {
+                x--;
+                ans = std::max(ans, x * x + y * y);
+            }
+        }
+    }
+};
