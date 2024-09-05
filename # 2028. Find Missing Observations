@@ -1,0 +1,21 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> missingRolls(vector<int>& rolls, int mean, int n) {
+        int cur = 0;
+        for (int i : rolls) cur += i;
+        int rem = mean * (size(rolls) + n) - cur;
+        if (rem > n * 6 || rem < n) return {};
+        int base = rem / n, mod = rem % n, i = 0;
+
+        vector<int> ans(n, base);
+        while (mod > 0) {
+            int add = std::min(mod, 6 - ans[i]);
+            ans[i++] += add;
+            mod -= add;
+        }
+        return ans;
+    }
+};
