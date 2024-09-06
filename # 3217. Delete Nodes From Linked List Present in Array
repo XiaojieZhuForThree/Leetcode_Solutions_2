@@ -1,0 +1,21 @@
+#include "ListNode.h"
+#include <vector>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+	ListNode* modifiedList(vector<int>& nums, ListNode* head) {
+		std::unordered_set<int> s;
+		for (int i : nums) s.insert(i);
+		vector<ListNode*> v;
+		ListNode* d = head;
+		while (d) {
+			if (!s.count(d->val)) v.push_back(d);
+			d = d->next;
+		}
+		for (int i = 0; i < size(v) - 1; i++) v[i]->next = v[i + 1];
+		v[size(v) - 1]->next = nullptr;
+		return v[0];
+	}
+};
