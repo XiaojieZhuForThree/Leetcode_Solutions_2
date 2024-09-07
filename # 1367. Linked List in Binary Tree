@@ -1,0 +1,22 @@
+#include "TreeNode.h"
+#include "ListNode.h"
+
+class Solution {
+public:
+    bool isSubPath(ListNode* head, TreeNode* root) {
+        return helper(head, root);
+    }
+private:
+    bool helper(ListNode* node, TreeNode* tree) {
+        if (!node) return true;
+        if (!tree) return false;
+        if (node->val != tree->val) return helper(node, tree->left) || helper(node, tree->right);
+        return validate(node, tree) || helper(node, tree->left) || helper(node, tree->right);
+    }
+    bool validate(ListNode* node, TreeNode* tree) {
+        if (!node) return true;
+        if (!tree) return false;
+        if (node->val != tree->val) return false;
+        return validate(node->next, tree->left) || validate(node->next, tree->right);
+    }
+};
