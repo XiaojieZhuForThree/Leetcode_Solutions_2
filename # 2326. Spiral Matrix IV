@@ -1,0 +1,35 @@
+#include <vector>
+#include "ListNode.h"
+using std::vector;
+
+
+class Solution {
+public:
+	vector<vector<int>> spiralMatrix(int m, int n, ListNode* head) {
+		vector<vector<int>> ans(m, vector<int>(n, -1));
+		int u = 0, d = m - 1, l = 0, r = n - 1;
+		while (head) {
+			for (int j = l; j <= r && head; j++) {
+				ans[u][j] = head->val;
+				head = head->next;
+			}
+			for (int j = u + 1; j <= d && head; j++) {
+				ans[j][r] = head->val;
+				head = head->next;
+			}
+			for (int j = r - 1; j >= l && head; j--) {
+				ans[d][j] = head->val;
+				head = head->next;
+			}
+			for (int j = d - 1; j >= u + 1 && head; j--) {
+				ans[j][l] = head->val;
+				head = head->next;
+			}
+			u++;
+			d--;
+			l++;
+			r--;
+		}
+		return ans;
+	}
+};
