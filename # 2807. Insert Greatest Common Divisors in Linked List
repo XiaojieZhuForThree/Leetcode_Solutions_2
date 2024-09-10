@@ -1,0 +1,23 @@
+#include "ListNode.h"
+
+class Solution {
+public:
+    ListNode* insertGreatestCommonDivisors(ListNode* head) {
+        ListNode* d = head;
+        while (d && d->next) {
+            int v = gcd(d->val, d->next->val);
+            ListNode* t = d, * n = d->next, * m = new ListNode(v);
+            t->next = m;
+            m->next = n;
+            d = d->next->next;
+        }
+        return head;
+    }
+
+private:
+    int gcd(int a, int b) {
+        if (a > b) return gcd(b, a);
+        if (b % a == 0) return a;
+        return gcd(b % a, a);
+    }
+};
