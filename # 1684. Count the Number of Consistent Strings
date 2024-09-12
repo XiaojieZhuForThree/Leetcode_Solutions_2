@@ -1,0 +1,23 @@
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    int countConsistentStrings(string allowed, vector<string>& words) {
+        vector<int> v(26);
+        for (char c : allowed) v[c - 'a'] = 1;
+        int ans = 0;
+        for (auto& w : words) ans += check(w, v);
+        return ans;
+    }
+
+private:
+    int check(string& w, vector<int>& v) {
+        for (char c : w) {
+            if (!v[c - 'a']) return false;
+        }
+        return true;
+    }
+};
