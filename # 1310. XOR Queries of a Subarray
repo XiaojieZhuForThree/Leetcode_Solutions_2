@@ -1,0 +1,14 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+        vector<int> dp;
+        dp.push_back(0);
+        for (int i : arr) dp.push_back(dp[size(dp) - 1] ^ i);
+        vector<int> ans;
+        for (auto& q : queries) ans.push_back(dp[q[1] + 1] ^ dp[q[0]]);
+        return ans;
+    }
+};
