@@ -1,0 +1,22 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+        int ans = 0, cur = 1, m = 1, s = 0;
+        for (int i : nums) {
+            if (i == cur) s++;
+            else {
+                cur = i;
+                s = 1;
+            }
+            if (cur > m) {
+                ans = s;
+                m = cur;
+            }
+            else if (cur == m) ans = std::max(ans, s);
+        }
+        return ans;
+    }
+};
