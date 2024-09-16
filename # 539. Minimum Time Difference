@@ -1,0 +1,26 @@
+#include <vector>
+#include <string>
+#include <algorithm>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    int findMinDifference(vector<string>& timePoints) {
+        vector<int> v;
+        for (auto& t : timePoints) {
+            v.push_back(convert(t, 0));
+            v.push_back(convert(t, 24 * 60));
+        }
+        std::sort(v.begin(), v.end());
+        int ans = INT_MAX;
+        for (int i = 0; i < size(v) - 1; i++) ans = std::min(ans, abs(v[i] - v[i + 1]));
+        return ans;
+    }
+
+private:
+    int convert(string& t, int offset) {
+        int h = stoi(t.substr(0, 2)), m = stoi(t.substr(3, 2));
+        return h * 60 + m + offset;
+    }
+};
