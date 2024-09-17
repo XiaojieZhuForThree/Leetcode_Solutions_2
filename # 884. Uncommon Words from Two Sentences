@@ -1,0 +1,34 @@
+#include <vector>
+#include <string>
+#include <unordered_map>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    vector<string> uncommonFromSentences(string s1, string s2) {
+        vector<string> ans;
+        std::unordered_map<string, int> ws1 = helper(s1), ws2 = helper(s2);
+        for (auto& p : ws1) {
+            if (p.second == 1 && !ws2.count(p.first)) ans.push_back(p.first);
+        }
+        for (auto& p : ws2) {
+            if (p.second == 1 && !ws1.count(p.first)) ans.push_back(p.first);
+        }
+        return ans;
+    }
+
+private:
+    std::unordered_map<string, int> helper(string& s) {
+        std::unordered_map<string, int> ans;
+        int l = 0, r = 0;
+        for (; r < size(s); r++) {
+            if (s[r] == ' ') {
+                ans[s.substr(l, r - l)]++;
+                l = r + 1;
+            }
+        }
+        ans[s.substr(l, r - l)]++;
+        return ans;
+    }
+};
