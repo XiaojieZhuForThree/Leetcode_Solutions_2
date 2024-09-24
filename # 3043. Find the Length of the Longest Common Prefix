@@ -1,0 +1,35 @@
+#include <unordered_set>
+#include <string>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        std::unordered_set<int> seen = getPrefix(arr1);
+        int ans = 0;
+        for (int i : arr2) {
+            while (i > 0) {
+                if (seen.count(i)) {
+                    int cand = std::size(std::to_string(i));
+                    ans = std::max(ans, cand);
+                    break;
+                }
+                i /= 10;
+            }
+        }
+        return ans;
+    }
+
+private:
+    std::unordered_set<int> getPrefix(vector<int>& arr) {
+        std::unordered_set<int> ans;
+        for (int i : arr) {
+            while (i > 0) {
+                ans.insert(i);
+                i /= 10;
+            }
+        }
+        return ans;
+    }
+};
