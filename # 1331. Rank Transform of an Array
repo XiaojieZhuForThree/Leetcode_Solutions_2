@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> arrayRankTransform(vector<int>& arr) {
+        int cnt = 0, prev = INT_MIN;
+        vector<int> ans, res(size(arr), -1);
+        for (int i = 0; i < size(arr); i++) ans.push_back(i);
+        sort(ans.begin(), ans.end(), [&arr](int i, int j) {
+            return arr[i] < arr[j];
+        });
+        for (int i : ans) {
+            if (arr[i] > prev) {
+                cnt++;
+                prev = arr[i];
+            }
+            res[i] = cnt;
+        }
+        return res;
+    }
+};
