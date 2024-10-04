@@ -1,0 +1,24 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    long long dividePlayers(vector<int>& skill) {
+        long long ans = 0, sum = 0;
+        std::sort(skill.begin(), skill.end());
+        for (int i : skill) sum += i;
+        int n = size(skill) / 2;
+        if (sum % n != 0) return -1;
+        int val = sum / n;
+        int l = 0, r = size(skill) - 1;
+        while (l < r) {
+            int cur = skill[l] + skill[r];
+            if (cur != val) return -1;
+            ans += skill[l] * skill[r];
+            l++;
+            r--;
+        }
+        return ans;
+    }
+};
