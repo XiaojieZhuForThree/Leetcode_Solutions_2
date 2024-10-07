@@ -1,0 +1,16 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    int minLength(string s) {
+        std::deque<char> q;
+        for (char c : s) {
+            if (c == 'B' && !q.empty() && q.back() == 'A') q.pop_back();
+            else if (c == 'D' && !q.empty() && q.back() == 'C') q.pop_back();
+            else q.push_back(c);
+        }
+        return size(q);
+    }
+};
