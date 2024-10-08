@@ -1,0 +1,25 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    int minSwaps(string s) {
+        int n = size(s) / 2;
+        std::deque<char> q;
+        for (char c : s) {
+            if (c == '[') q.push_back(c);
+            else {
+                if (!q.empty() && q.back() == '[') q.pop_back();
+                else q.push_back(c);
+            }
+        }
+        return helper(size(q));
+    }
+private:
+    int helper(int n) {
+        if (n == 0) return 0;
+        if (n == 2 || n == 4) return 1;
+        return 1 + helper(n - 4);
+    }
+};
