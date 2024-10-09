@@ -1,0 +1,18 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+        std::deque<char> q;
+        for (char c : s) {
+            if (c == '(') q.push_back(c);
+            else {
+                if (!q.empty() && q.back() == '(') q.pop_back();
+                else q.push_back(c);
+            }
+        }
+        return size(q);
+    }
+};
