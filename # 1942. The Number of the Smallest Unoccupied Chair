@@ -1,0 +1,37 @@
+#include <vector>
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    int smallestChair(vector<vector<int>>& times, int targetFriend) {
+        std::priority_queue<int, vector<int>, std::greater<int>> reclaimed;
+        auto comp = [](std::pair<int, int> a, std::pair<int, int> b) {
+            return a.first > b.first;
+            };
+        std::priority_queue<std::pair<int, int>, vector<std::pair<int, int>>, decltype(comp)> p;
+        int cntr = 0;
+        for (int i = 0; i < size(times); i++) times[i].push_back(i);
+        sort(times.begin(), times.end());
+        for (auto& t : times) {
+            int s = t[0], e = t[1], i = t[2];
+            while (!p.empty() && p.top().first <= s) {
+                std::pair<int, int> cur = p.top();
+                p.pop();
+                reclaimed.push(cur.second);
+            }
+            int n;
+            if (!reclaimed.empty()) {
+                n = reclaimed.top();
+                reclaimed.pop();
+            }
+            else {
+                n = cntr;
+                cntr++;
+            }
+            p.push({ e, n });
+            if (i == targetFriend) return n;
+        }
+        return -1;
+    }
+};
