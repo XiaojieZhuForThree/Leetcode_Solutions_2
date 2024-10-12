@@ -1,0 +1,24 @@
+#include <vector>
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    int minGroups(vector<vector<int>>& A) {
+        std::sort(A.begin(), A.end());
+        int ans = 0;
+        std::priority_queue<int, vector<int>, std::greater<int>> q;
+        for (auto& p : A) {
+            if (q.empty() || q.top() >= p[0]) {
+                ans++;
+                q.push(p[1]);
+            }
+            else {
+                int i = q.top();
+                q.pop();
+                q.push(p[1]);
+            }
+        }
+        return ans;
+    }
+};
