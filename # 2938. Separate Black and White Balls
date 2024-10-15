@@ -1,0 +1,19 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    long long minimumSteps(string s) {
+        int l = 0, r = size(s) - 1;
+        while (r >= 0 && s[r] == '1') r--;
+        long long ans = 0;
+        for (; l < r; l++) {
+            if (s[l] == '0') continue;
+            ans += r - l;
+            s[l] = '0';
+            s[r] = '1';
+            while (r >= 0 && s[r] == '1') r--;
+        }
+        return ans;
+    }
+};
