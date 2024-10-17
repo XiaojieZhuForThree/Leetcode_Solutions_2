@@ -1,0 +1,20 @@
+#include <string>
+class Solution {
+public:
+    int maximumSwap(int num) {
+        std::string rep = std::to_string(num);
+        int ans = num;
+        for (int i = 0; i < size(rep); i++) {
+            for (int j = 0; j < i; j++) {
+                if (rep[i] <= rep[j]) continue;
+                char c = rep[i];
+                rep[i] = rep[j];
+                rep[j] = c;
+                ans = std::max(ans, stoi(rep));
+                rep[j] = rep[i];
+                rep[i] = c;
+            }
+        }
+        return ans;
+    }
+};
