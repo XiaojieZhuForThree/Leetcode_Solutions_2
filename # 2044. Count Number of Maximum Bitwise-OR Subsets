@@ -1,0 +1,22 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int ans = 0;
+    int countMaxOrSubsets(vector<int>& nums) {
+        int m = 0;
+        for (int i : nums) m |= i;
+        dfs(nums, 0, 0, m);
+        return ans;
+    }
+private:
+    void dfs(vector<int>& n, int i, int cur, int m) {
+        if (i == size(n)) {
+            if (cur == m) ans++;
+            return;
+        }
+        dfs(n, i + 1, cur, m);
+        dfs(n, i + 1, cur | n[i], m);
+    }
+};
