@@ -1,0 +1,24 @@
+#include "TreeNode.h"
+#include <unordered_map>
+#include <algorithm>
+
+class Solution {
+public:
+    long long kthLargestLevelSum(TreeNode* root, int k) {
+        std::unordered_map<int, long long> m;
+        dfs(root, m, 0);
+        std::vector<long long> v;
+        for (auto& p : m) v.push_back(p.second);
+        if (size(v) < k) return -1;
+        sort(v.begin(), v.end());
+        reverse(v.begin(), v.end());
+        return v[k - 1];
+    }
+private:
+    void dfs(TreeNode* node, std::unordered_map<int, long long>& m, int l) {
+        if (!node) return;
+        m[l] += node->val;
+        dfs(node->left, m, l + 1);
+        dfs(node->right, m, l + 1);
+    }
+};
