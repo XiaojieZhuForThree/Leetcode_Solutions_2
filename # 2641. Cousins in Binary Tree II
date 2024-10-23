@@ -1,0 +1,34 @@
+#include "TreeNode.h"
+#include <deque>
+
+class Solution {
+public:
+    TreeNode* replaceValueInTree(TreeNode* root) {
+        std::deque<TreeNode*> q;
+        q.push_back(root);
+        int val = -root->val, nxt = 0;
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                TreeNode* cur = q.front();
+                q.pop_front();
+                cur->val += val;
+                int s = 0;
+                if (cur->left) s += cur->left->val;
+                if (cur->right) s += cur->right->val;
+                if (cur->left) {
+                    nxt += cur->left->val;
+                    cur->left->val = -s;
+                    q.push_back(cur->left);
+                }
+                if (cur->right) {
+                    nxt += cur->right->val;
+                    cur->right->val = -s;
+                    q.push_back(cur->right);
+                }
+            }
+            val = nxt;
+            nxt = 0;
+        }
+        return root;
+    }
+};
