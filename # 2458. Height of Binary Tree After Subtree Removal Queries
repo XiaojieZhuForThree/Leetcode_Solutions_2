@@ -1,0 +1,39 @@
+#include <unordered_map>
+#include <vector>
+#include "TreeNode.h"
+using std::vector;
+
+class Solution {
+public:
+    std::unordered_map<int, int> d, l, r;
+    int mld = 0, mrd = 0;
+    vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
+        helper(root, d, 0);
+        left(root, 0);
+        right(root, 0);
+        vector<int> ans;
+        for (int i : queries) ans.push_back(std::max(l[i], r[i]));
+        return ans;
+    }
+private:
+    void helper(TreeNode* node, std::unordered_map<int, int>& d, int i) {
+        if (!node) return;
+        d[node->val] = i;
+        helper(node->left, d, i + 1);
+        helper(node->right, d, i + 1);
+    }
+    void left(TreeNode* node, int cur) {
+        if (!node) return;
+        left(node->left, cur);
+        l[node->val] = std::max(cur, d[node->val] - 1);
+        mld = std::max(mld, d[node->val]);
+        left(node->right, mld);
+    }
+    void right(TreeNode* node, int cur) {
+        if (!node) return;
+        right(node->right, cur);
+        r[node->val] = std::max(cur, d[node->val] - 1);
+        mrd = std::max(mrd, d[node->val]);
+        right(node->left, mrd);
+    }
+};
