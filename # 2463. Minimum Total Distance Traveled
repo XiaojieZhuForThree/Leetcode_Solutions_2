@@ -1,0 +1,25 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    long long minimumTotalDistance(vector<int>& robot, vector<vector<int>>& factory) {
+        vector<int> fs;
+        for (auto& f : factory) {
+            for (int i = 0; i < f[1]; i++) fs.push_back(f[0]);
+        }
+        sort(robot.begin(), robot.end());
+        sort(fs.begin(), fs.end());
+        int m = size(robot), n = size(fs);
+        vector<vector<long long>> dp(m + 1, vector<long long>(n + 1, 1e12));
+        for (int i = 0; i <= n; i++) dp[0][i] = 0;
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                long long dist = abs((long long)robot[i - 1] - fs[j - 1]);
+                dp[i][j] = std::min(dp[i][j - 1], dp[i - 1][j - 1] + dist);
+            }
+        }
+        return dp[m][n];
+    }
+};
