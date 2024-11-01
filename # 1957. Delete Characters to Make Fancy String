@@ -1,0 +1,24 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    string makeFancyString(string s) {
+        std::deque<char> q;
+        char n = '#';
+        int i = 0;
+        for (char c : s) {
+            if (c == n && i == 2) continue;
+            if (c != n) {
+                n = c;
+                i = 1;
+            }
+            else i++;
+            q.push_back(c);
+        }
+        string ans = "";
+        for (char c : q) ans.push_back(c);
+        return ans;
+    }
+};
