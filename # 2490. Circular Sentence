@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+    bool isCircularSentence(string sentence) {
+        std::vector<string> v = helper(sentence);
+        for (int i = 0; i < size(v); i++) {
+            int j = (i + 1 + size(v)) % size(v);
+            if (v[i][size(v[i]) - 1] != v[j][0]) return false;
+        }
+        return true;
+    }
+private:
+    std::vector<string> helper(string& s) {
+        std::vector<string> v;
+        int l = 0, r = 0;
+        while (r <= size(s)) {
+            if (r == size(s) || s[r] == ' ') {
+                v.push_back(s.substr(l, r - l));
+                l = r + 1;
+            }
+            r++;
+        }
+        return v;
+    }
+};
