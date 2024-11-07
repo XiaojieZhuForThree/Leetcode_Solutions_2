@@ -1,0 +1,21 @@
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int largestCombination(vector<int>& candidates) {
+        std::unordered_map<int, int> m;
+        int ans = 0;
+        for (int i : candidates) {
+            int v = 0;
+            while (i > 0) {
+                m[v] += i % 2;
+                ans = std::max(ans, m[v]);
+                i >>= 1;
+                v++;
+            }
+        }
+        return ans;
+    }
+};
