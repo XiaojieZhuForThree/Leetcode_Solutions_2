@@ -1,0 +1,50 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minimumSubarrayLength(vector<int>& nums, int k) {
+        int ans = -1, l = size(nums) + 1;
+        vector<int> v(31, 0);
+        int j = 0;
+        for (int i = 0; i < size(nums); i++) {
+            int cur = add(nums[i], v);
+            if (cur < k) continue;
+            while (j < i) {
+                if (sub(nums[j], v) < k) {
+                    add(nums[j], v);
+                    break;
+                }
+                j++;
+            }
+            if (l > i - j + 1) {
+                l = i - j + 1;
+                ans = i - j + 1;
+            }
+        }
+        return ans;
+    }
+private:
+    int add(int i, vector<int>& v) {
+        for (int j = 0; j < size(v); j++) {
+            if (((1 << j) & i) == (1 << j)) v[j]++;
+        }
+        int ans = 0;
+        for (int k = 0; k < size(v); k++) {
+            if (v[k] > 0) ans += (1 << k);
+        }
+        return ans;
+    }
+
+
+    int sub(int i, vector<int>& v) {
+        for (int j = 0; j < size(v); j++) {
+            if (((1 << j) & i) == (1 << j)) v[j]--;
+        }
+        int ans = 0;
+        for (int k = 0; k < size(v); k++) {
+            if (v[k] > 0) ans += (1 << k);
+        }
+        return ans;
+    }
+};
