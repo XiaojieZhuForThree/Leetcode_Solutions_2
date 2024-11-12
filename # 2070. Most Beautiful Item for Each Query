@@ -1,0 +1,24 @@
+#include <vector>
+#include <algorithm>
+#include <map>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
+        items.push_back({ 0, 0 });
+        sort(items.begin(), items.end());
+        int cur = 0;
+        std::map<int, int> m;
+        for (auto& i : items) {
+            cur = std::max(cur, i[1]);
+            m[-i[0]] = cur;
+        }
+        vector<int> ans;
+        for (int i : queries) {
+            auto p = m.lower_bound(-i);
+            ans.push_back(p->second);
+        }
+        return ans;
+    }
+};
