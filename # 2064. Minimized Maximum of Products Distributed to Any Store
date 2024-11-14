@@ -1,0 +1,24 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minimizedMaximum(int n, vector<int>& quantities) {
+        int l = 1, r = 100000;
+        while (l < r) {
+            int m = l + (r - l) / 2;
+            if (helper(quantities, m, n)) r = m;
+            else l = m + 1;
+        }
+        return l;
+    }
+private:
+    bool helper(vector<int>& q, int m, int n) {
+        int k = 0;
+        for (int i : q) {
+            k += i / m;
+            if (i % m != 0) k++;
+        }
+        return k <= n;
+    }
+};
