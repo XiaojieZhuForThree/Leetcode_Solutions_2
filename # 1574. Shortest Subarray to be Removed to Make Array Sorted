@@ -1,0 +1,21 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int findLengthOfShortestSubarray(vector<int>& arr) {
+        int l = 0, ll = 1, n = size(arr), r = n - 1, rr = n - 2;
+        while (ll < n && arr[ll] >= arr[ll - 1]) ll++;
+        ll--;
+        while (rr >= 0 && arr[rr] <= arr[rr + 1]) rr--;
+        rr++;
+        if (ll - l + 1 == n || r - rr + 1 == n) return 0;
+        int i = l, j = rr;
+        int len = r - rr + 1;
+        for (; i <= ll; i++) {
+            while (j <= r && arr[j] < arr[i]) j++;
+            len = std::max(len, i - l + 1 + r - j + 1);
+        }
+        return n - len;
+    }
+};
