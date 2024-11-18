@@ -1,0 +1,38 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> decrypt(vector<int>& code, int k) {
+        if (k == 0) {
+            for (int i = 0; i < size(code); i++) code[i] = 0;
+            return code;
+        }
+        else if (k > 0) return helper1(code, k);
+        else return helper2(code, k);
+    }
+
+private:
+    vector<int> helper1(vector<int>& code, int k) {
+        vector<int> s;
+        int cur = 0, n = size(code);
+        for (int i : code) {
+            cur += i;
+            s.push_back(cur);
+        }
+        vector<int> ans;
+        for (int i = 0; i < n; i++) {
+            if (i + k < n) ans.push_back(s[i + k] - s[i]);
+            else ans.push_back(s[n - 1] - s[i] + s[k - n + i]);
+        }
+        return ans;
+    }
+
+    vector<int> helper2(vector<int>& code, int k) {
+        vector<int> rc(code.begin(), code.end());
+        reverse(rc.begin(), rc.end());
+        vector<int> ans = helper1(rc, -k);
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
