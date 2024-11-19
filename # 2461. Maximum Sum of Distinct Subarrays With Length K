@@ -1,0 +1,31 @@
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        long long ans = 0;
+        if (size(nums) < k) return ans;
+        std::unordered_map<int, int> m;
+        std::unordered_set<int> s;
+        int l = 0;
+        long long cur = 0;
+        for (int r = 0; r < size(nums); r++) {
+            cur += nums[r];
+            m[nums[r]]++;
+            if (m[nums[r]] > 1) s.insert(nums[r]);
+            if (r - l + 1 < k) continue;
+            if (r - l + 1 > k) {
+                cur -= nums[l];
+                m[nums[l]]--;
+                if (m[nums[l]] <= 1) s.erase(nums[l]);
+                l++;
+            }
+            if (size(s) > 0) continue;
+            if (cur > ans) ans = cur;
+        }
+        return ans;
+    }
+};
