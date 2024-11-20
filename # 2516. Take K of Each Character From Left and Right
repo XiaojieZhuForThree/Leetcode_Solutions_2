@@ -1,0 +1,39 @@
+#include <string>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+    int takeCharacters(string s, int k) {
+        std::vector<int> v(3, 0);
+        int n = size(s), l = 0, r = n - 1;
+        while (l < n && !valid(v, k)) {
+            v[s[l] - 'a']++;
+            l++;
+        }
+        if (!valid(v, k)) return -1;
+        l--;
+        int ans = l + 1;
+        for (; r >= 0; r--) {
+            v[s[r] - 'a']++;
+            while (l >= 0 && valid(v, k)) {
+                v[s[l] - 'a']--;
+                if (!valid(v, k)) {
+                    v[s[l] - 'a']++;
+                    break;
+                }
+                else l--;
+            }
+            ans = std::min(ans, n - r + l + 1);
+
+        }
+        return ans;
+    }
+private:
+    bool valid(std::vector<int>& v, int k) {
+        for (int i : v) {
+            if (i < k) return false;
+        }
+        return true;
+    }
+};
