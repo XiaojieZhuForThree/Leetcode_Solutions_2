@@ -1,0 +1,24 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<vector<char>> rotateTheBox(vector<vector<char>>& box) {
+        int m = size(box), n = size(box[0]);
+        vector<vector<char>> ans(n, vector<char>(m, '.'));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) ans[j][m - i - 1] = box[i][j];
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = n - 1; j >= 0; j--) {
+                if (ans[j][i] != '#') continue;
+                int k = j + 1;
+                while (k < n && ans[k][i] == '.') k++;
+                k--;
+                ans[j][i] = '.';
+                ans[k][i] = '#';
+            }
+        }
+        return ans;
+    }
+};
