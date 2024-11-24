@@ -1,0 +1,19 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    long long maxMatrixSum(vector<vector<int>>& matrix) {
+        long long ans = 0;
+        int m = INT_MAX, c = 0;
+        for (int i = 0; i < size(matrix); i++) {
+            for (int n : matrix[i]) {
+                m = std::min(m, abs(n));
+                ans += abs(n);
+                if (n < 0) c++;
+            }
+        }
+        if (c % 2 == 0) return ans;
+        return ans - 2 * m;
+    }
+};
