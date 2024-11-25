@@ -1,0 +1,45 @@
+#include <vector>
+#include <string>
+#include <unordered_set>
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    int slidingPuzzle(vector<vector<int>>& board) {
+        std::string s;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) s += std::to_string(board[i][j]);
+        }
+        std::unordered_set<std::string> vis;
+        vis.insert(s);
+
+        std::queue<std::string> q;
+        q.push(s);
+        int l = 0;
+
+        while (q.size()) {
+            int n = q.size();
+            while (n--) {
+                std::string str = q.front(); q.pop();
+                if (str == "123450") return l;
+
+                int idx = str.find("0");
+                if (idx != 2) check(idx, idx + 1, str, vis, q);
+                if (idx != 3) check(idx, idx - 1, str, vis, q);
+                check(idx, idx + 3, str, vis, q);
+                check(idx, idx - 3, str, vis, q);
+            }
+            l++;
+        }
+        return -1;
+    }
+private:
+    void check(int j, int i, std::string& s, std::unordered_set<std::string>& vis, std::queue<std::string>& q) {
+        if (i >= 0 && i < 6) {
+            std::swap(s[j], s[i]);
+            if (vis.find(s) == vis.end()) vis.insert(s), q.push(s);
+            std::swap(s[j], s[i]);
+        }
+    }
+};
