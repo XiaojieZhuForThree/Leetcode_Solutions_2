@@ -1,0 +1,17 @@
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    int findChampion(int n, vector<vector<int>>& edges) {
+        std::unordered_map<int, int> m;
+        for (auto& e : edges) m[e[1]]++;
+        vector<int> v;
+        for (int i = 0; i < n; i++) {
+            if (!m.count(i)) v.push_back(i);
+        }
+        if (size(v) > 1) return -1;
+        return v[0];
+    }
+};
