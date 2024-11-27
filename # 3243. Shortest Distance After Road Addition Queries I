@@ -1,0 +1,41 @@
+#include <vector>
+#include <deque>
+#include <unordered_set>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    std::unordered_map<int, vector<int>> m;
+    vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& queries) {
+        vector<int> ans;
+        for (int i = 0; i < n - 1; i++) m[i].push_back(i + 1);
+        for (auto& q : queries) {
+            m[q[0]].push_back(q[1]);
+            ans.push_back(bfs(n - 1));
+        }
+        return ans;
+    }
+private:
+    int bfs(int e) {
+        std::deque<int> q;
+        std::unordered_set<int> s;
+        q.push_back(0);
+        s.insert(0);
+        int ans = 0;
+        while (!q.empty()) {
+            for (int i = size(q); i > 0; i--) {
+                int cur = q.front();
+                q.pop_front();
+                if (cur == e) return ans;
+                for (int j : m[cur]) {
+                    if (s.count(j)) continue;
+                    q.push_back(j);
+                    s.insert(j);
+                }
+            }
+            ans++;
+        }
+        return -1;
+    }
+};
