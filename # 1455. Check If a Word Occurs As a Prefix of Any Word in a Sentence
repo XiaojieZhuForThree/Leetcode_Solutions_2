@@ -1,0 +1,22 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    int isPrefixOfWord(string sentence, string searchWord) {
+        int l = 0, cnt = 0;
+        for (int r = 0; r <= size(sentence); r++) {
+            if (r == size(sentence) || sentence[r] == ' ') {
+                cnt++;
+                if (match(sentence.substr(l, r - l), searchWord)) return cnt;
+                l = r + 1;
+            }
+        }
+        return -1;
+    }
+private:
+    bool match(string a, string b) {
+        if (size(a) < size(b)) return false;
+        return a.substr(0, size(b)) == b;
+    }
+};
