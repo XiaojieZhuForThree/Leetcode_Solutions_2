@@ -1,0 +1,19 @@
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    string addSpaces(string s, vector<int>& spaces) {
+        string ans = "";
+        int l = 0;
+        for (int i : spaces) {
+            ans += s.substr(l, i - l);
+            ans += ' ';
+            l = i;
+        }
+        ans += s.substr(l, size(s) - l);
+        return ans;
+    }
+};
