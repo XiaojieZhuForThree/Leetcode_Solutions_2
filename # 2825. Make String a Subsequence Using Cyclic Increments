@@ -1,0 +1,19 @@
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    bool canMakeSubsequence(string str1, string str2) {
+        int l = 0, r = 0;
+        vector<char> v;
+        for (char c = 'a'; c <= 'z'; c++) v.push_back(c);
+        for (; l < size(str1); l++) {
+            if (r == size(str2)) return true;
+            if (str1[l] == str2[r]) r++;
+            else if (v[(str1[l] - 'a' + 1) % 26] == v[str2[r] - 'a']) r++;
+        }
+        return r == size(str2);
+    }
+};
