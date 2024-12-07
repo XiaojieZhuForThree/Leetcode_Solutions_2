@@ -1,0 +1,20 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minimumSize(vector<int>& nums, int maxOperations) {
+        int l = 1, r = 0;
+        for (int i : nums) r = std::max(i, r);
+        while (l < r) {
+            int cur = 0, m = l + (r - l) / 2;
+            for (int i : nums) {
+                cur += i / m;
+                if (i % m != 0) cur++;
+            }
+            if (cur > size(nums) + maxOperations) l = m + 1;
+            else r = m;
+        }
+        return l;
+    }
+};
