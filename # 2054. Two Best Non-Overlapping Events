@@ -1,0 +1,25 @@
+#include <vector>
+#include <queue>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int maxTwoEvents(vector<vector<int>>& events) {
+        std::sort(events.begin(), events.end());
+        int maxVal = 0;
+
+        std::priority_queue<vector<int>> pq;
+        int ans = 0;
+
+        for (auto e : events) {
+            while (!pq.empty() and ((-pq.top()[0]) < e[0])) {
+                maxVal = std::max(maxVal, pq.top()[2]);
+                pq.pop();
+            }
+            ans = std::max(ans, e[2] + maxVal);
+            pq.push({ (-e[1]) , e[0] , e[2] });
+        }
+        return ans;
+    }
+};
