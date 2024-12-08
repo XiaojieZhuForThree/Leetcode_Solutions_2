@@ -6,19 +6,20 @@ using std::vector;
 class Solution {
 public:
     int maxTwoEvents(vector<vector<int>>& events) {
-        std::sort(events.begin(), events.end());
-        int maxVal = 0;
-
-        std::priority_queue<vector<int>> pq;
-        int ans = 0;
-
-        for (auto e : events) {
-            while (!pq.empty() and ((-pq.top()[0]) < e[0])) {
-                maxVal = std::max(maxVal, pq.top()[2]);
+        sort(begin(events), end(events));
+        auto comp = [](auto& a, auto& b) {
+            return a[0] > b[0];
+            };
+        std::priority_queue<vector<int>, vector<vector<int>>, decltype(comp)> pq(comp);
+        int ans = 0, add = 0;
+        for (auto& e : events) {
+            while (!pq.empty() && pq.top()[0] < e[0]) {
+                auto cur = pq.top();
                 pq.pop();
+                add = std::max(add, cur[1]);
             }
-            ans = std::max(ans, e[2] + maxVal);
-            pq.push({ (-e[1]) , e[0] , e[2] });
+            ans = std::max(ans, e[2] + add);
+            pq.push({ e[1], e[2] });
         }
         return ans;
     }
