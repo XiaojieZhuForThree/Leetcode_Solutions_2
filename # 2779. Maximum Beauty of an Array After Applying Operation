@@ -1,0 +1,18 @@
+#include <algorithm>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int maximumBeauty(vector<int>& nums, int k) {
+        int n = size(nums);
+        int s = 0;
+        int ans = 0;
+        std::sort(nums.begin(), nums.end());
+        for (int i = 0; i < n; i++) {
+            while (s < i && nums[s] + k < nums[i] - k) s++;
+            ans = std::max(ans, i - s + 1);
+        }
+        return ans;
+    }
+};
