@@ -1,0 +1,35 @@
+#include <vector>
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    long long continuousSubarrays(vector<int>& nums) {
+        auto comp1 = [&nums](int a, int b) {
+            return nums[a] < nums[b];
+            };
+        auto comp2 = [&nums](int a, int b) {
+            return nums[a] > nums[b];
+            };
+        std::priority_queue<int, vector<int>, decltype(comp1)> p1(comp1);
+        std::priority_queue<int, vector<int>, decltype(comp2)> p2(comp2);
+        long long ans = 0;
+        int l = 0;
+        for (int i = 0; i < size(nums); i++) {
+            p1.push(i);
+            p2.push(i);
+            while (!p1.empty() && abs(nums[p1.top()] - nums[i]) > 2) {
+                int cur = p1.top();
+                p1.pop();
+                l = std::max(l, cur + 1);
+            }
+            while (!p2.empty() && abs(nums[p2.top()] - nums[i]) > 2) {
+                int cur = p2.top();
+                p2.pop();
+                l = std::max(l, cur + 1);
+            }
+            ans += (i - l + 1);
+        }
+        return ans;
+    }
+};
