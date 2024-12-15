@@ -1,0 +1,26 @@
+#include <vector>
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
+        auto comp = [](vector<int>& a, vector<int>& b) {
+            return (double(a[0] + 1) / (a[1] + 1) - double(a[0]) / a[1]) < (double(b[0] + 1) / (b[1] + 1) - double(b[0]) / b[1]);
+            };
+        std::priority_queue<vector<int>, vector<vector<int>>, decltype(comp)> pq(comp);
+        for (auto& v : classes) pq.push(v);
+        for (int i = 0; i < extraStudents; i++) {
+            auto cur = pq.top();
+            pq.pop();
+            pq.push({ cur[0] + 1, cur[1] + 1 });
+        }
+        double ans = 0;
+        while (!pq.empty()) {
+            auto cur = pq.top();
+            pq.pop();
+            ans += (double(cur[0]) / cur[1]);
+        }
+        return ans / size(classes);
+    }
+};
