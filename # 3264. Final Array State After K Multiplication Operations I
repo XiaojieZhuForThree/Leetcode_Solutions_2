@@ -1,0 +1,17 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
+        int n = size(nums);
+        for (int i = 0; i < k; i++) {
+            int cur = -1;
+            for (int j = 0; j < n; j++) {
+                if (cur == -1 || nums[cur] > nums[j]) cur = j;
+            }
+            nums[cur] *= multiplier;
+        }
+        return nums;
+    }
+};
