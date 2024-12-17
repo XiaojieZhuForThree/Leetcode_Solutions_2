@@ -1,0 +1,42 @@
+#include <string>
+#include <unordered_map>
+#include <queue>
+#include <vector>
+using std::string;
+
+struct ds {
+    char c;
+    int rem;
+};
+
+class Solution {
+public:
+    string repeatLimitedString(string s, int repeatLimit) {
+        std::unordered_map<char, int> m;
+        for (char c : s) m[c]++;
+        auto comp = [](ds a, ds b) {
+            return a.c < b.c;
+            };
+        std::priority_queue<ds, std::vector<ds>, decltype(comp)> pq(comp);
+        for (auto& p : m) pq.push(ds(p.first, p.second));
+        string ans = "";
+        while (!pq.empty()) {
+            auto cur = pq.top();
+            pq.pop();
+            while (cur.rem > 0) {
+                int rep = std::min(cur.rem, repeatLimit);
+                cur.rem -= rep;
+                for (int i = 0; i < rep; i++) ans += cur.c;
+                if (cur.rem) {
+                    if (pq.empty()) return ans;
+                    auto nxt = pq.top();
+                    pq.pop();
+                    ans += nxt.c;
+                    nxt.rem--;
+                    if (nxt.rem > 0) pq.push(nxt);
+                }
+            }
+        }
+        return ans;
+    }
+};
