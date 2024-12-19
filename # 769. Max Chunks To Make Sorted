@@ -1,0 +1,27 @@
+#include <vector>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int ans = 0, l = 0;
+        std::unordered_set<int> s;
+        for (int r = 0; r < size(arr); r++) {
+            s.insert(arr[r]);
+            bool cand = true;
+            for (int i = l; i <= r; i++) {
+                if (!s.count(i)) {
+                    cand = false;
+                    break;
+                }
+            }
+            if (cand) {
+                ans++;
+                l = r + 1;
+                s.clear();
+            }
+        }
+        return ans;
+    }
+};
