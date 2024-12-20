@@ -1,0 +1,31 @@
+#include "TreeNode.h"
+#include <deque>
+
+class Solution {
+public:
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        bool rot = false;
+        std::deque<TreeNode*> q;
+        q.push_back(root);
+        while (!q.empty()) {
+            if (rot) {
+                int l = 0, r = size(q) - 1;
+                while (l < r) {
+                    int tmp = q[l]->val;
+                    q[l]->val = q[r]->val;
+                    q[r]->val = tmp;
+                    l++;
+                    r--;
+                }
+            }
+            for (int i = size(q); i > 0; i--) {
+                TreeNode* cur = q.front();
+                q.pop_front();
+                if (cur->left) q.push_back(cur->left);
+                if (cur->right) q.push_back(cur->right);
+            }
+            rot = !rot;
+        }
+        return root;
+    }
+};
