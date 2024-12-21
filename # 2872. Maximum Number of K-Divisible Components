@@ -1,0 +1,39 @@
+#include <vector>
+#include <deque>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    int maxKDivisibleComponents(int n, vector<vector<int>>& edges, vector<int>& values, int k) {
+        vector<int> ind(n, 0);
+        vector<vector<int>> v(n);
+        vector<long long> nv;
+        for (int i : values) nv.push_back(i);
+        for (auto& e : edges) {
+            v[e[0]].push_back(e[1]);
+            v[e[1]].push_back(e[0]);
+            ind[e[0]]++;
+            ind[e[1]]++;
+        }
+        std::deque<int> q;
+        std::unordered_set<int> seen;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (ind[i] == 1 || ind[i] == 0) q.push_back(i);
+        }
+        while (!q.empty()) {
+            int i = q.front();
+            seen.insert(i);
+            q.pop_front();
+            if (nv[i] % k == 0) ans++;
+            for (int j : v[i]) {
+                if (seen.count(j)) continue;
+                nv[j] += nv[i];
+                ind[j]--;
+                if (ind[j] == 1) q.push_back(j);
+            }
+        }
+        return ans;
+    }
+};
