@@ -1,0 +1,50 @@
+#include <vector>
+#include <queue>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
+        int n = size(heights), t = size(queries);
+        vector<int> ans(t, -1);
+        vector<int> dp(n, -1);
+        auto comp1 = [&queries](int i, int j) {
+            int ri = std::max(queries[i][0], queries[i][1]), rj = std::max(queries[j][0], queries[j][1]);
+            return ri > rj;
+        };
+        auto comp2 = [&heights, &queries](int i, int j) {
+            int vali = std::max(heights[queries[i][0]], heights[queries[i][1]]), valj = std::max(heights[queries[j][0]], heights[queries[j][1]]);
+            return vali > valj;
+        };
+        std::priority_queue<int, vector<int>, decltype(comp1)> pq1(comp1);
+        std::priority_queue<int, vector<int>, decltype(comp2)> pq2(comp2);
+        std::deque<int> q;
+        for (int i = n - 1; i >= 0; i--) {
+            while (!q.empty() && heights[q.back()] <= heights[i]) q.pop_back();
+            if (!q.empty()) dp[i] = q.back();
+            q.push_back(i);
+        }
+        for (int i = 0; i < t; i++) {
+            auto& q = queries[i];
+            int l = std::min(q[0], q[1]), r = std::max(q[0], q[1]);
+            if (l == r) ans[i] = l;
+            else if (heights[l] < heights[r]) ans[i] = r;
+            else if (heights[l] > heights[r] && dp[l] == -1 || dp[l] > r) ans[i] = dp[l];
+            else pq1.push(i);
+        }
+        for (int i = 0; i < n; i++) {
+            while (!pq1.empty() && std::max(queries[pq1.top()][0], queries[pq1.top()][1]) < i) {
+                int j = pq1.top();
+                pq1.pop();
+                pq2.push(j);
+            }
+            while (!pq2.empty() && std::max(heights[queries[pq2.top()][0]], heights[queries[pq2.top()][1]]) < heights[i]) {
+                int j = pq2.top();
+                pq2.pop();
+                ans[j] = i;
+            }
+        }
+        return ans;
+    }
+};
