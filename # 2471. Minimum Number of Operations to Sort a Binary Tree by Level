@@ -1,0 +1,66 @@
+#include "TreeNode.h"
+#include <deque>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+
+class Solution
+{
+public:
+    int minimumOperations(TreeNode *root)
+    {
+        std::deque<TreeNode *> q;
+        q.push_back(root);
+        int ans = 0;
+        while (!q.empty())
+        {
+            std::vector<int> v;
+            for (int i = size(q); i > 0; i--)
+            {
+                TreeNode *cur = q.front();
+                q.pop_front();
+                if (cur->left)
+                {
+                    v.push_back(cur->left->val);
+                    q.push_back(cur->left);
+                }
+                if (cur->right)
+                {
+                    v.push_back(cur->right->val);
+                    q.push_back(cur->right);
+                }
+            }
+            ans += helper(v);
+        }
+        return ans;
+    }
+
+private:
+    int helper(std::vector<int> &v)
+    {
+        std::unordered_map<int, int> m1, m2;
+        std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
+        for (int i = 0; i < size(v); i++)
+        {
+            m1[i] = v[i];
+            m2[v[i]] = i;
+            pq.push(v[i]);
+        }
+        int ans = 0;
+        for (int i = 0; i < size(v); i++)
+        {
+            int c = pq.top();
+            pq.pop();
+            if (m2[c] == i)
+                continue;
+            ans++;
+            int j = m1[i];
+            int k = m2[c];
+            m1[i] = c;
+            m2[c] = i;
+            m1[k] = j;
+            m2[j] = k;
+        }
+        return ans;
+    }
+};
