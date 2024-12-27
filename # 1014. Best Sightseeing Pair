@@ -1,0 +1,14 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int maxScoreSightseeingPair(vector<int>& values) {
+        int ans = 0, prev = values[0];
+        for (int i = 1; i < size(values); i++) {
+            ans = std::max(ans, values[i] - i + prev);
+            prev = std::max(prev, values[i] + i);
+        }
+        return ans;
+    }
+};
