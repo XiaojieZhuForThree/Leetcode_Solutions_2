@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<int> ans;
+    vector<int> maxSumOfThreeSubarrays(vector<int>& nums, int k) {
+        int s = 0;
+        vector<int> ks;
+        ans.resize(3, 0);
+        for (int i = 0; i < k; i++) s += nums[i];
+        ks.push_back(s); 
+        for (int i = 1; i + k - 1 < size(nums); i++) {
+            s -= nums[i - 1];
+            s += nums[i + k - 1];
+            ks.push_back(s);
+        }
+        vector<vector<int>> dp, cur, prev;
+        dp.resize(size(ks), vector<int>(4, -1));
+        cur.resize(size(ks), vector<int>(4, -1));
+        prev.resize(size(ks), vector<int>(4, -1));
+        dp[0][1] = ks[0];
+        cur[0][1] = 0;
+        prev[0][1] = 0;
+        for (int i = 1; i < size(ks); i++) {
+            if (ks[i] > dp[i - 1][1]) {
+                dp[i][1] = ks[i];
+                cur[i][1] = i;
+                prev[i][1] = i;
+            }
+            else {
+                dp[i][1] = dp[i - 1][1];
+                cur[i][1] = cur[i - 1][1];
+                prev[i][1] = prev[i - 1][1];
+            }
+        }
+        for (int j = 2; j <= 3; j++) {
+            for (int i = (j - 1) * k; i < size(ks); i++) {
+                if (ks[i] + dp[i - k][j - 1] > dp[i - 1][j]) {
+                    dp[i][j] = ks[i] + dp[i - k][j - 1];
+                    cur[i][j] = i;
+                    prev[i][j] = cur[i - k][j - 1];
+                    if (j == 3) {
+                        ans[2] = i;
+                        ans[1] = cur[i - k][2];
+                        ans[0] = cur[prev[i - k][2]][1];
+                    }
+                }
+                else {
+                    dp[i][j] = dp[i - 1][j];
+                    cur[i][j] = cur[i - 1][j];
+                    prev[i][j] = prev[i - 1][j];
+                }
+            }
+        }
+        return ans;
+    }
+};
