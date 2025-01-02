@@ -1,0 +1,25 @@
+#include <vector>
+#include <string>
+#include <unordered_set>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
+        std::unordered_set<char> vs = {'a', 'e', 'i', 'o', 'u'};
+        vector<int> dp;
+        vector<int> ans;
+        int cur = 0;
+        for (auto& s : words) {
+            if (vs.count(s[0]) && vs.count(s[size(s) - 1])) cur++;
+            dp.push_back(cur);
+        }
+        for (auto& q : queries) {
+            int l = q[0] == 0 ? 0 : dp[q[0] - 1];
+            int r = dp[q[1]];
+            ans.push_back(r - l);
+        }
+        return ans;
+    }
+};
