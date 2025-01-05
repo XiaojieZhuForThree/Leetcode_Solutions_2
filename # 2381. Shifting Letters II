@@ -1,0 +1,36 @@
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    string shiftingLetters(string s, vector<vector<int>>& shifts) {
+        vector<vector<int>> l, r;
+        vector<int> dp(size(s), 0);
+        vector<char> ch;
+        for (char c = 'a'; c <= 'z'; c++) ch.push_back(c);
+        for (auto& v : shifts) {
+            if (v[2] == 0) l.push_back(v);
+            else r.push_back(v);
+        }
+        helper(s, l, ch);
+        helper(s, r, ch);
+        return s;
+    }
+
+private:
+    void helper(string& s, vector<vector<int>>& sh, vector<char>& ch) {
+        vector<int> dp(size(s), 0);
+        for (auto& v : sh) {
+            int add = v[2] == 0 ? -1 : 1;
+            dp[v[0]] += add;
+            if (v[1] + 1 < size(s)) dp[v[1] + 1] -= add;
+        }
+        int rot = 0;
+        for (int i = 0; i < size(s); i++) {
+            rot += dp[i];
+            s[i] = ch[(26 + ((s[i] - 'a') + rot) % 26) % 26];
+        }
+    }
+};
