@@ -1,0 +1,21 @@
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    vector<string> stringMatching(vector<string>& words) {
+        vector<string> ans;
+        for (auto& s : words) {
+            for (auto& w : words) {
+                if (s == w) continue;
+                if (w.find(s) != std::string::npos) {
+                    ans.push_back(s);
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
