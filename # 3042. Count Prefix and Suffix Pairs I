@@ -1,0 +1,22 @@
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    int countPrefixSuffixPairs(vector<string>& words) {
+        int ans = 0;
+        for (int i = 0; i < size(words) - 1; i++) {
+            for (int j = i + 1; j < size(words); j++) {
+                if (yes(words[i], words[j])) ans++;
+            }
+        }
+        return ans;
+    }
+private:
+    bool yes(string& a, string& b) {
+        if (size(a) > size(b)) return false;
+        return a == b.substr(0, size(a)) && a == b.substr(size(b) - size(a), size(a));
+    }
+};
