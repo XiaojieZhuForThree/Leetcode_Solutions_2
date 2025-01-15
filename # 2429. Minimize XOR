@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minimizeXor(int num1, int num2) {
+        int ans = num1;
+        int o1 = ones(num1), o2 = ones(num2);
+        if (o1 < o2) return add(ans, o1, o2);
+        else if (o1 > o2) return minus(ans, o1, o2);
+        return ans; 
+    }
+private:
+    int ones(int i) {
+        int ans = 0;
+        while (i > 0) {
+            ans += i % 2;
+            i >>= 1;
+        }
+        return ans;
+    }
+    int add(int ans, int o1, int o2) {
+        int i = 0;
+        while (o1 < o2) {
+            while (i < 32 && ((1 << i) & ans) != 0) i++;
+            ans += (1 << i);
+            o1++;
+        }
+        return ans;
+    }
+    int minus(int ans, int o1, int o2) {
+        int i = 0;
+        while (o1 > o2) {
+            while (i < 32 && ((1 << i) & ans) == 0) i++;
+            ans -= (1 << i);
+            o1--;
+        }
+        return ans;
+    }
+};
