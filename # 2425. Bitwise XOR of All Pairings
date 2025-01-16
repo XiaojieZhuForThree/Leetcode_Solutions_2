@@ -1,0 +1,16 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int xorAllNums(vector<int>& nums1, vector<int>& nums2) {
+        int a = 0, b = 0;
+        if (size(nums1) % 2 != 0) {
+            for (int i : nums2) b ^= i;
+        }
+        if (size(nums2) % 2 != 0) {
+            for (int i : nums1) a ^= i;
+        }
+        return a ^ b;
+    }
+};
