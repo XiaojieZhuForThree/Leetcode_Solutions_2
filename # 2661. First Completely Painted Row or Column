@@ -1,0 +1,22 @@
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
+        int m = size(mat), n = size(mat[0]);
+        std::unordered_map<int, std::pair<int, int>> cd;
+        std::unordered_map<int, int> r, c;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) cd[mat[i][j]] = {i, j};
+        }
+        for (int i = 0; i < size(arr); i++) {
+            int cur = arr[i];
+            r[cd[cur].first]++;
+            c[cd[cur].second]++;
+            if (r[cd[cur].first] == n || c[cd[cur].second] == m) return i;
+        }
+        return -1;
+    }
+};
