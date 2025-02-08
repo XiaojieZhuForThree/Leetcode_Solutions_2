@@ -1,0 +1,26 @@
+#include <unordered_map>
+#include <set>
+
+class NumberContainers {
+    public:
+        std::unordered_map<int, int> m;
+        std::unordered_map<int, std::set<int>> n;
+        NumberContainers() {
+            
+        }
+        
+        void change(int index, int number) {
+            if (m.count(index)) {
+                n[m[index]].erase(index);
+                if (n[m[index]].empty()) n.erase(m[index]);
+                m.erase(index);
+            }
+            m[index] = number;
+            n[number].insert(index);
+        }
+        
+        int find(int number) {
+            if (!n.count(number)) return -1;
+            return *n[number].begin();
+        }
+    };
