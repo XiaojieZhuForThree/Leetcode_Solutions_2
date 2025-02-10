@@ -1,0 +1,18 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+    public:
+        string clearDigits(string s) {
+            std::deque<char> q;
+            for (char c : s) {
+                if ('0' <= c && c <= '9') {
+                    if (!q.empty()) q.pop_back();
+                } else q.push_back(c);
+            }
+            string ans;
+            for (char c : q) ans += c;
+            return ans;
+        }
+    };
