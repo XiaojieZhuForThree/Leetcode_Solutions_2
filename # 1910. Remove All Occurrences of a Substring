@@ -1,0 +1,45 @@
+#include <string>
+#include <vector>
+#include <deque>
+using std::string;
+
+class Solution {
+    public:
+        string removeOccurrences(string s, string part) {
+            std::vector<int> v(size(part), 0);
+            int cur = 0;
+            for (int i = 1; i < size(part); i++) {
+                if (part[i] == part[cur]) {
+                    cur++;
+                } else {
+                    if (cur > 0) {
+                        while (cur > 0 && part[i] != part[cur]) cur = v[cur - 1];
+                        if (part[i] == part[cur]) cur++;
+                    }
+                }
+                v[i] = cur;
+            }
+            std::deque<std::pair<char, int>> q;
+            cur = 0;
+            for (char c : s) {
+                if (c == part[cur]) {
+                    cur++;
+                }
+                else {
+                    if (cur > 0) {
+                        while (cur > 0 && c != part[cur]) cur = v[cur - 1];
+                        if (c == part[cur]) cur++;
+                    }
+                }
+                q.push_back({c, cur});
+                if (cur == size(part)) {
+                    for (int i = 0; i < size(part); i++) q.pop_back();
+                }
+                if (q.empty()) cur = 0;
+                else cur = q.back().second;
+            }
+            string ans = "";
+            for (auto& p : q) ans += p.first;
+            return ans;
+        }
+    };
