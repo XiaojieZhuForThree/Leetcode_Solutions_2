@@ -1,0 +1,27 @@
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+    public:
+        int maximumSum(vector<int>& nums) {
+            std::unordered_map<int, vector<int>> m;
+            for (int i : nums) {
+                int s = 0, j = i;
+                while (j > 0) {
+                    s += (j % 10);
+                    j /= 10;
+                }
+                m[s].push_back(i);
+            }
+            int ans = -1;
+            for (auto& p : m) {
+                auto& v = p.second;
+                if (size(v) < 2) continue;
+                std::sort(v.begin(), v.end());
+                ans = std::max(ans, v[size(v) - 2] + v[size(v) - 1]);
+            }
+            return ans;
+        }
+    };
