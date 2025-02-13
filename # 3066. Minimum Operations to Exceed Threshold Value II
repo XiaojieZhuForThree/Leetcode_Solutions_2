@@ -1,0 +1,30 @@
+#include <vector>
+#include <functional>
+#include <queue>
+using std::vector;
+
+class Solution {
+    public:
+        int minOperations(vector<int>& nums, int k) {
+            std::priority_queue<long long, vector<long long>, std::greater<long long>> main;
+    
+            int res = 0;
+    
+            for (int i = 0;i<nums.size();i++) {
+                main.push(nums[i]);
+            }
+    
+            while (main.top()<k) {
+                res++;
+    
+                long long additive = main.top()*2;
+                main.pop();
+                additive+=main.top();
+                main.pop();
+    
+                main.push(additive);
+            }
+    
+            return res;
+        }
+    };
