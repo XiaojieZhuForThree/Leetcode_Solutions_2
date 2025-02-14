@@ -1,0 +1,29 @@
+#include <vector>
+using std::vector;
+
+class ProductOfNumbers {
+    public:
+        vector<int> v;
+        ProductOfNumbers() {
+            
+        }
+        
+        void add(int num) {
+            if (num == 0) v.clear();
+            else if (v.empty()) v.push_back(num);
+            else v.push_back(v[size(v) - 1] * num);
+        }
+        
+        int getProduct(int k) {
+            if (k > size(v)) return 0;
+            if (k == size(v)) return v[size(v) - 1];
+            return v[size(v) - 1] / v[size(v) - k - 1];
+        }
+    };
+    
+    /**
+     * Your ProductOfNumbers object will be instantiated and called as such:
+     * ProductOfNumbers* obj = new ProductOfNumbers();
+     * obj->add(num);
+     * int param_2 = obj->getProduct(k);
+     */
