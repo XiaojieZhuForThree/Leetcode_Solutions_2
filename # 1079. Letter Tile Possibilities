@@ -1,0 +1,30 @@
+#include <unordered_set>
+#include <string>
+using std::string;
+
+class Solution {
+    public:
+        std::unordered_set<string> st;
+        std::unordered_set<int> used;
+        int numTilePossibilities(string tiles) {
+            string base = "";
+            dfs(tiles, base, 0);
+            return size(st);
+        }
+    private:
+        void dfs(string& s, string& cur, int j) {
+            if (j == size(s)) {
+                if (!cur.empty()) st.insert(cur);
+            }
+            for (int i = 0; i < size(s); i++) {
+                if (used.count(i)) continue;
+                used.insert(i);
+                dfs(s, cur, j + 1);
+                cur += s[i];
+                dfs(s, cur, j + 1);
+                cur.pop_back();
+                used.erase(i);
+            }
+        }
+    };
+    
