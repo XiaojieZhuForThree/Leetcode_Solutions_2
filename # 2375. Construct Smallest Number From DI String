@@ -1,0 +1,32 @@
+#include <string>
+using std::string;
+
+class Solution {
+    public:
+        int used[10];
+        int ans = 999999999;
+        string smallestNumber(string pattern) {
+            int cur = 0;
+            for (int i = 1; i <= 9; i++) dfs(pattern, cur, i, 0);
+            return std::to_string(ans);
+        }
+    private:
+        void dfs(string& pattern, int cur, int cand, int i) {
+            cur = cur * 10 + cand;
+            used[cand] = 1; 
+            if (i >= size(pattern)) ans = std::min(ans, cur);
+            else if (pattern[i] == 'I') {
+                for (int j = cand + 1; j <= 9; j++) {
+                    if (used[j] == 1) continue;
+                    dfs(pattern, cur, j, i + 1);
+                }
+            } else {
+                for (int j = cand - 1; j > 0; j--) {
+                    if (used[j] == 1) continue;
+                    dfs(pattern, cur, j, i + 1);
+                }
+            }
+            cur /= 10;
+            used[cand] = 0;
+        }
+    };
