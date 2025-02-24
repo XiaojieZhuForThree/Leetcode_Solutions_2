@@ -1,0 +1,53 @@
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+    public:
+        int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+            int n = size(amount);
+            vector<vector<int>> g(n);
+            for (auto& e : edges) {
+                g[e[0]].push_back(e[1]);
+                g[e[1]].push_back(e[0]);
+            }
+            vector<int> prev(n, -1);
+            vector<bool> visited(n, false);
+            helper1(g, prev, visited, bob);
+            vector<int> pth;
+            int i = 0;
+            while (i != bob) {
+                pth.push_back(i);
+                i = prev[i];
+            }
+            pth.push_back(bob);
+            std::unordered_map<int, int> m;
+            reverse(pth.begin(), pth.end());
+            for (int i = 0; i < size(pth); i++) m[pth[i]] = i;
+            fill(visited.begin(), visited.end(), false);
+            return helper2(g, m, visited, amount, 0, 0);
+        }
+    
+    private:
+        void helper1(vector<vector<int>>& g, vector<int>& prev, vector<bool>& visited, int b) {
+            visited[b] = true;
+            for (int j : g[b]) {
+                if (visited[j]) continue;
+                prev[j] = b;
+                helper1(g, prev, visited, j);
+            }
+        }
+        int helper2(vector<vector<int>>& g, std::unordered_map<int, int>& m, vector<bool>& visited, vector<int>& amount, int a, int cur) {
+            int base = amount[a];
+            if (m.count(a) && m[a] == cur) base /= 2;
+            else if (m.count(a) && m[a] < cur) base = 0;
+            visited[a] = true;
+            int nxt = INT_MIN;
+            for (int j : g[a]) {
+                if (visited[j]) continue;
+                nxt =std::max(nxt, helper2(g, m, visited, amount, j, cur + 1));
+            }
+            if (nxt == INT_MIN) return base;
+            return base + nxt;
+        }
+    };
