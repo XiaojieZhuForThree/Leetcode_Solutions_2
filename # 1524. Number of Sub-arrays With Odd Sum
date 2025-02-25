@@ -1,0 +1,25 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+    public:
+        int numOfSubarrays(vector<int>& arr) {
+            long long o = arr[0] % 2 == 1, e = arr[0] % 2 == 0;
+            long long  ao = o, ae = e;
+            long long  s = arr[0];
+            int mod = 1e9 + 7;
+            for (int i = 1; i < size(arr); i++) {
+                s += arr[i];
+                if (s % 2 == 0) {
+                    ao = (ao + o) % mod;
+                    ae += (ae + 1 + e) % mod;
+                    e++;
+                } else {
+                    ao = (ao + 1 + e) % mod;
+                    ae = (ae + o) % mod;
+                    o++;
+                }
+            }
+            return ao;
+        }
+    };
