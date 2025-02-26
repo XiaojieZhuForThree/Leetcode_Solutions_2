@@ -1,0 +1,20 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+    public:
+        int maxAbsoluteSum(vector<int>& nums) {
+            int ans = 0, s = 0, mp = 0, mn = 0;
+            for (int i : nums) {
+                s += i;
+                if (s >= 0) {
+                    ans = std::max(ans, abs(s - mn));
+                    mp = std::max(mp, s);
+                } else {
+                    ans = std::max(ans, abs(s - mp));
+                    mn = std::min(mn, s);
+                }
+            }
+            return ans;
+        }
+    };
