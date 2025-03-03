@@ -1,0 +1,18 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> pivotArray(vector<int>& nums, int pivot) {
+        vector<int> l, r;
+        int cnt = 0;
+        for (int i : nums) {
+            if (i == pivot) cnt++;
+            else if (i < pivot) l.push_back(i);
+            else r.push_back(i);
+        }
+        for (int i = 0; i < cnt; i++) l.push_back(pivot);
+        l.insert(l.end(), r.begin(), r.end());
+        return l;
+    }
+};
