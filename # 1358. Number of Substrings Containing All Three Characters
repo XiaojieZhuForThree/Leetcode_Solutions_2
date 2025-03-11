@@ -1,0 +1,27 @@
+#include <string>
+#include <unordered_map>
+using std::string;
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        std::unordered_map<char, int> m = { {'a', 0}, {'b', 0}, {'c', 0} };
+        int l = 0, ans = 0;
+        for (int r = 0; r < size(s); r++) {
+            m[s[r]]++;
+            while (l <= r && yes(m)) {
+                ans += size(s) - r;
+                m[s[l]]--;
+                l++;
+            }
+        }
+        return ans;
+    }
+private:
+    bool yes(std::unordered_map<char, int>& m) {
+        for (auto& p : m) {
+            if (p.second <= 0) return false;
+        }
+        return true;
+    }
+};
