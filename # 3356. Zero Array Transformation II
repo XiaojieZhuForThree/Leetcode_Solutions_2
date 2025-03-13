@@ -1,0 +1,25 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+        int ans = 0, i = 0, n = size(nums);
+        vector<int> sweep(n + 1, 0);
+        while (i < n && nums[i] == 0) i++;
+        for (auto& q : queries) {
+            if (i == n) break;
+            ans++;
+            if (q[1] < i) continue;
+            sweep[std::max(i, q[0])] += q[2];
+            sweep[q[1] + 1] -= q[2];
+            int cur = sweep[i];
+            while (i < n && cur >= nums[i]) {
+                i++;
+                cur += sweep[i];
+            }
+            sweep[i] = cur;
+        }
+        return i == n ? ans : -1;
+    }
+};
