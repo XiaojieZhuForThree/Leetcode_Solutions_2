@@ -1,0 +1,22 @@
+#include <vector>
+#include <numeric>
+using std::vector;
+
+class Solution {
+public:
+    int maximumCandies(vector<int>& candies, long long k) {
+        long long l = 1, r = std::accumulate(candies.begin(), candies.end(), 0ll);
+        while (l < r) {
+            long long mid = l + (r - l) / 2;
+            if (yes(candies, k, mid)) l = mid + 1;
+            else r = mid;
+        }
+        return yes(candies, k, l) ? l : l - 1;
+    }
+private:
+    bool yes(vector<int>& candies, long long k, long long cur) {
+        long long p = 0;
+        for (int i : candies) p += (i / cur);
+        return p >= k;
+    }
+};
