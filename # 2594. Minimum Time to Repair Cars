@@ -1,0 +1,21 @@
+#include <vector>;
+using std::vector;
+
+class Solution {
+public:
+    long long repairCars(vector<int>& ranks, int cars) {
+        long long l = 0, r = (long long)(1e14);
+        while (l < r) {
+            long long m = l + (r - l) / 2;
+            if (yes(ranks, m, cars)) r = m;
+            else l = m + 1;
+        }
+        return l;
+    }
+private:
+    bool yes(vector<int>& r, long long j, int c) {
+        long long v = 0;
+        for (int i : r) v += int(sqrt((j / i)));
+        return v >= c;
+    }
+};
