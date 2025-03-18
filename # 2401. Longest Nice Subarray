@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int longestNiceSubarray(vector<int>& nums) {
+        vector<int> v(32, 0);
+        int ans = 0, l = 0;
+        for (int r = 0; r < size(nums); r++) {
+            for (int j = 0; j < 32; j++)  v[j] += ((1 << j) & nums[r]) != 0;
+            while (!valid(v)) {
+                for (int j = 0; j < 32; j++) v[j] -= ((1 << j) & nums[l]) != 0;
+                l++;
+            }
+            ans = std::max(ans, r - l + 1);
+        }
+        return ans;
+    }
+private:
+    bool valid(vector<int>& v) {
+        for (int i : v) {
+            if (i > 1) return false;
+        }
+        return true;
+    }
+};
