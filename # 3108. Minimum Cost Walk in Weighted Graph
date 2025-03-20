@@ -1,0 +1,40 @@
+#include <unordered_map>
+#include <vector>
+
+using std::vector;
+
+struct UF {
+    std::unordered_map<int, int> par, wg;
+
+    UF(int n) {
+        for (int i = 0; i < n; i++) {
+            par[i] = i;
+            wg[i] = -1;
+        }
+    }
+    void merge(int a, int b, int w) {
+        int pa = find(a), pb = find(b);
+        par[pb] = pa;
+        if (wg[pa] == -1) wg[pa] = w;
+        if (wg[pb] == -1) wg[pb] = w;
+        wg[pa] &= wg[pb] & w;
+    }
+    int find(int i) {
+        if (par[i] == i) return par[i];
+        par[i] = find(par[i]);
+        return par[i];
+    }
+};
+class Solution {
+public:
+    vector<int> minimumCost(int n, vector<vector<int>>& edges, vector<vector<int>>& query) {
+        UF uf(n);
+        for (auto& e : edges) uf.merge(e[0], e[1], e[2]);
+        vector<int> ans;
+        for (auto& q : query) {
+            if (uf.find(q[0]) != uf.find(q[1])) ans.push_back(-1);
+            else ans.push_back(uf.wg[uf.find(q[0])]);
+        }
+        return ans;
+    }
+};
