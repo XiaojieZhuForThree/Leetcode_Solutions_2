@@ -1,0 +1,35 @@
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <deque>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+        std::unordered_map<string, int> ind;
+        std::unordered_map<string, vector<string>> v;
+        for (int i = 0; i < size(recipes); i++) {
+            for (auto& s : ingredients[i]) {
+                v[s].push_back(recipes[i]);
+                ind[recipes[i]]++;
+            }
+        }
+        vector<string> ans;
+        std::deque<string> q;
+        for (auto& s : supplies) q.push_back(s);
+        while (!q.empty()) {
+            string s = q.front();
+            q.pop_front();
+            for (auto& t : v[s]) {
+                ind[t]--;
+                if (ind[t] == 0) {
+                    ans.push_back(t);
+                    q.push_back(t);
+                }
+            }
+        }
+        return ans;
+    }
+};
