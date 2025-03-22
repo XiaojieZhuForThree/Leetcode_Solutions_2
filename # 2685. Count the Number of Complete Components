@@ -1,0 +1,45 @@
+#include <unordered_map>
+#include <vector>
+
+using std::vector;
+
+struct UF {
+    std::unordered_map<int, int> p;
+    std::unordered_map<int, int> v;
+    std::unordered_map<int, int> e;
+    UF(int n) {
+        for (int i = 0; i < n; i++) {
+            p[i] = i;
+            v[i] = 1;
+            e[i] = 0;
+        }
+    }
+    void merge(int i, int j) {
+        int pi = find(i), pj = find(j);
+        if (pi != pj) {
+            p[pj] = pi;
+            v[pi] += v[pj];
+            e[pi] += e[pj];
+        }
+        e[pi]++;
+    }
+    int find(int i) {
+        if (p[i] == i) return i;
+        p[i] = find(p[i]);
+        return p[i];
+    }
+};
+class Solution {
+public:
+    int countCompleteComponents(int n, vector<vector<int>>& edges) {
+        UF uf(n);
+        for (auto& e : edges) uf.merge(e[0], e[1]);
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (uf.find(i) != i) continue;
+            else if (uf.e[i] != (uf.v[i] * (uf.v[i] - 1)) / 2) continue;
+            else ans++;
+        }
+        return ans;
+    }
+};
