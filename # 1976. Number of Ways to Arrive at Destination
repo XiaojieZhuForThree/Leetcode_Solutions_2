@@ -1,0 +1,51 @@
+#include <vector>
+#include <queue>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+        int MOD = (int)(1e9 + 7);
+        auto comp = [](std::pair<int, long long> a, std::pair<int, long long> b) {
+            return a.second > b.second;
+            };
+        std::priority_queue<std::pair<int, long long>, vector<std::pair<int, long long>>, decltype(comp)> pq(comp);
+        std::unordered_map<int, vector<std::pair<int, int>>> m;
+        for (auto& r : roads) {
+            m[r[0]].push_back({ r[1], r[2] });
+            m[r[1]].push_back({ r[0], r[2] });
+        }
+        vector<long long> w(n, LLONG_MAX), c(n, 0LL);
+        w[0] = 0;
+        c[0] = 1;
+        for (auto& p : m[0]) {
+            pq.push({ p.first, p.second });
+            w[p.first] = p.second;
+            c[p.first] = 1;
+        }
+        vector<int> visited(n, 0);
+        visited[0] = 1;
+        while (!pq.empty()) {
+            int cur = pq.top().first;
+            long long cost = pq.top().second;
+            pq.pop();
+            if (visited[cur]) continue;
+            if (w[cur] < cost) continue;
+            visited[cur] = 1;
+            for (auto& p : m[cur]) {
+                int nxt = p.first;
+                long long ncost = p.second + cost;
+                if (visited[nxt]) continue;
+                if (w[nxt] < ncost) continue;
+                else if (w[nxt] == ncost) c[nxt] = (c[nxt] % MOD + c[cur] % MOD) % MOD;
+                else {
+                    w[nxt] = ncost;
+                    c[nxt] = c[cur] % MOD;
+                    pq.push({ nxt, ncost });
+                }
+            }
+        }
+        return c[n - 1] % MOD;
+    }
+};
