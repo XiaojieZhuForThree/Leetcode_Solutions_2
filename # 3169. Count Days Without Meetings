@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int countDays(int days, vector<vector<int>>& meetings) {
+        sort(meetings.begin(), meetings.end());
+        int e = 0, ans = 0;
+        for (auto& m : meetings) {
+            if (m[0] > e) ans += m[0] - e - 1;
+            e = std::max(e, m[1]);
+        }
+        if (days > e) ans += days - e;
+        return ans;
+    }
+};
