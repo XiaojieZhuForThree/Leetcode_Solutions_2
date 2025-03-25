@@ -1,0 +1,26 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
+        vector<std::pair<int, int>> hor, ver;
+        for (auto& r : rectangles) {
+            hor.push_back({ r[0], r[2] });
+            ver.push_back({ r[1], r[3] });
+        }
+        sort(hor.begin(), hor.end());
+        sort(ver.begin(), ver.end());
+        return helper(hor) || helper(ver);
+    }
+private:
+    bool helper(vector<std::pair<int, int>>& v) {
+        int cnt = 0, e = 0;
+        for (auto& p : v) {
+            if (p.first >= e) cnt++;
+            e = std::max(e, p.second);
+        }
+        return cnt >= 3;
+    }
+};
