@@ -1,0 +1,43 @@
+#include <vector>
+#include <set>
+#include <queue>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
+        int n = size(queries), x = size(grid), y = size(grid[0]);
+        vector<int> v, ans(n, 0);
+        vector<vector<bool>> visited(x, vector<bool>(y, false));
+        for (int i = 0; i < n; i++) v.push_back(i);
+        sort(begin(v), end(v), [&queries](int i, int j) {
+            return queries[i] < queries[j];
+            });
+        auto comp = [&grid](std::pair<int, int> a, std::pair<int, int> b) {
+            return grid[a.first][a.second] > grid[b.first][b.second];
+            };
+        std::priority_queue<std::pair<int, int>, vector<std::pair<int, int>>, decltype(comp)> q(comp);
+
+        vector<std::pair<int, int>> dirs({ {1, 0}, {-1, 0}, {0, 1}, {0, -1} });
+
+        q.push({ 0, 0 });
+        visited[0][0] = true;
+        int cnt = 0;
+        for (int i : v) {
+            while (!q.empty() && queries[i] > grid[q.top().first][q.top().second]) {
+                auto p = q.top();
+                q.pop();
+                cnt++;
+                for (auto& d : dirs) {
+                    int nx = p.first + d.first, ny = p.second + d.second;
+                    if (nx < 0 || nx >= x || ny < 0 || ny >= y || visited[nx][ny]) continue;
+                    visited[nx][ny] = true;
+                    q.push({ nx, ny });
+                }
+            }
+            ans[i] = cnt;
+        }
+        return ans;
+    }
+};
