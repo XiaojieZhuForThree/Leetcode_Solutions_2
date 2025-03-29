@@ -1,0 +1,54 @@
+class Solution {
+public:
+    int maximumScore(vector<int>& nums, int k) {
+        int n = size(nums), N = 100001;
+        vector<int> s(N, 0);
+        for (int i = 2; i < N; i++) {
+            if (s[i] == 0) {
+                for (int j = 1; i * j < N; j++) s[i * j]++;
+            }
+        }
+        vector<int> ls(n, 0), rs(n, 0);
+        ls[0] = 1;
+        deque<int> q;
+        for (int i = 0; i < n; i++) {
+            while (!q.empty() && s[nums[i]] > s[nums[q.back()]]) q.pop_back();
+            if (q.empty()) ls[i] = i + 1;
+            else ls[i] = i - q.back();
+            q.push_back(i);
+        }
+        q.clear();
+        for (int i = n - 1; i >= 0; i--) {
+            while (!q.empty() && s[nums[i]] >= s[nums[q.back()]]) q.pop_back();
+            if (q.empty()) rs[i] = n - i;
+            else rs[i] = q.back() - i;
+            q.push_back(i);
+        }
+        unordered_map<int, long long> m;
+        for (int i = 0; i < n; i++) m[nums[i]] += (long long)(ls[i]) * rs[i];
+        priority_queue<int, vector<int>, less<int>> pq;
+        for (auto& p : m) pq.push(p.first);
+        long long ans = 1, MOD = (long long)(1e9 + 7);
+        long long cnt = (long long)(k);
+        while (cnt > 0) {
+            long long cur = pq.top(), use = m[cur];
+            pq.pop();
+            if (cur == 1) break;
+            long long t = std::min(cnt, use);
+            long long base = helper(cur, t, MOD);
+            ans *= base;
+            ans %= MOD;
+            cnt -= t;
+        }
+        return ans % MOD;
+    }
+private:
+    long long helper(long long i, long long e, long long MOD) {
+        if (e == 0) return 1;
+        long long base = helper(i, e / 2, MOD);
+        long long ans = (base * base) % MOD;
+        if (e % 2 == 0) return ans;
+        return ((i % MOD) * ans) % MOD;
+
+    }
+};
