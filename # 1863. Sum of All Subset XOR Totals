@@ -21,3 +21,24 @@ private:
         return ans;
     }
 };
+
+
+#include <vector>
+#include <numeric>
+using std::vector;
+
+class Solution {
+public:
+    int subsetXORSum(vector<int>& nums) {
+        vector<int> v;
+        helper(nums, v, 0);
+        return std::accumulate(begin(v), end(v), 0);
+    }
+private:
+    void helper(vector<int>& nums, vector<int>& v, int i) {
+        if (i == size(nums)) return;
+        for (int j = size(v) - 1; j >= 0; j--) v.push_back(nums[i] ^ v[j]);
+        v.push_back(nums[i]);
+        helper(nums, v, i + 1);
+    }
+};
