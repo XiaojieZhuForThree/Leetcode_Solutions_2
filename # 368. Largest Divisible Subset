@@ -29,3 +29,38 @@ public:
         return ans;
     }
 };
+
+
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        int n = size(nums);
+        vector<int> dp(n, 1), prev(n, -1);
+        for (int i = 0; i < n; i++) prev[i] = i;
+        std::sort(nums.begin(), nums.end());
+        int max = 0, cur = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[i] % nums[j] == 0 && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    prev[i] = j;
+                }
+            }
+            if (dp[i] > max) {
+                max = dp[i];
+                cur = i;
+            }
+        }
+        vector<int> ans;
+        while (prev[cur] != cur) {
+            ans.push_back(nums[cur]);
+            cur = prev[cur];
+        }
+        ans.push_back(nums[cur]);
+        return ans;
+    }
+};
