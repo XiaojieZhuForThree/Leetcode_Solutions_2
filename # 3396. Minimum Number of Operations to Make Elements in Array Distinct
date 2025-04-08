@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        vector<int> v(101, 0);
+        int cnt = 0;
+        for (int i : nums) v[i]++;
+        std::unordered_set<int> s;
+        for (int i = 1; i < 101; i++) {
+            if (v[i] > 1) s.insert(i);
+        }
+        int i = 0, ans = 0;
+        while (!s.empty()) {
+            ans++;
+            for (int j = 0; j < 3 && i + j <= size(nums); j++) {
+                v[nums[i]]--;
+                if (s.count(nums[i]) && v[nums[i]] < 2) s.erase(nums[i]);
+                i++;
+            }
+        }
+        return ans;
+    }
+};
