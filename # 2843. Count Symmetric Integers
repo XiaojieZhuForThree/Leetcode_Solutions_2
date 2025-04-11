@@ -1,0 +1,18 @@
+#include <string>
+class Solution {
+public:
+    int countSymmetricIntegers(int low, int high) {
+        int ans = 0;
+        for (int i = low; i <= high; i++) ans += yes(i);
+        return ans;
+    }
+private:
+    bool yes(int i) {
+        std::string s = std::to_string(i);
+        if (size(s) % 2 == 1) return false;
+        int l = 0, r = 0, h = size(s) / 2;
+        for (int i = 0; i < h; i++) l += s[i] - '0';
+        for (int i = h; i < size(s); i++) r += s[i] - '0';
+        return l == r;
+    }
+};
