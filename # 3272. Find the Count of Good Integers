@@ -1,0 +1,42 @@
+class Solution {
+public:
+    long long ans = 0LL;
+    unordered_set<string> seen;
+    long long countGoodIntegers(int n, int k) {
+        string s(n, '0');
+        dfs(s, 0, n - 1, k, true);
+        return ans;
+    }
+private:
+    void dfs(string& s, int i, int j, int k, bool begin) {
+        if (i > j) {
+            if (stoll(s) % k == 0) {
+                string copy = s;
+                sort(copy.begin(), copy.end());
+                if (seen.count(copy)) return;
+                seen.insert(copy);
+                vector<int> v(10, 0);
+                for (char c : s) v[c - '0']++;
+                ans += helper(v, size(s));
+            }
+            return;
+        }
+        char c = begin ? '1' : '0';
+        for (; c <= '9'; c++) {
+            s[i] = c;
+            s[j] = c;
+            dfs(s, i + 1, j - 1, k, false);
+        }
+    }
+    long long helper(vector<int>& v, int n) {
+        long long ans = (n - v[0]) * fac(n - 1);
+        for (int i = 0; i < 10; i++) {
+            ans /= fac(v[i]);
+        }
+        return ans;
+    }
+    long long fac(int i) {
+        if (i == 0) return 1LL;
+        return i * fac(i - 1);
+    }
+};
