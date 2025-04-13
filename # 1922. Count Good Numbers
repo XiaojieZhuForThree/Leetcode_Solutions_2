@@ -1,0 +1,20 @@
+using LL = long long;
+
+class Solution {
+public:
+    LL MOD = (LL)1e9 + 7;
+    int countGoodNumbers(long long n) {
+        LL e = n % 2 == 1 ? n / 2 + 1 : n / 2, o = n - e;
+        LL ce = helper(e, 5), co = helper(o, 4);
+        return (ce * co) % MOD;
+    }
+private:
+    LL helper(LL e, int i) {
+        if (e == 0) return 1;
+        if (e == 1) return i;
+        LL half = helper(e / 2, i);
+        LL ans = half * half;
+        if (e % 2 == 1) ans *= i;
+        return ans % MOD;
+    }
+};
