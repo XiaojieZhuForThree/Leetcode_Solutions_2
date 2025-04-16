@@ -1,0 +1,29 @@
+#include <unordered_map>
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    long long countGood(vector<int>& nums, int k) {
+        int i = 0, j = 0, cur = 0;
+        long long ans = 0;
+        std::unordered_map<int, int> m;
+        for (; j < size(nums); j++) {
+            if (m.count(nums[j])) cur += m[nums[j]];
+            m[nums[j]]++;
+            if (cur < k) continue;
+            while (i < j) {
+                m[nums[i]]--;
+                cur -= m[nums[i]];
+                if (cur < k) {
+                    cur += m[nums[i]];
+                    m[nums[i]]++;
+                    break;
+                }
+                else i++;
+            }
+            ans += i + 1;
+        }
+        return ans;
+    }
+};
