@@ -1,0 +1,20 @@
+#include <vector>
+#include <algorithm>
+using std::vector;
+
+class Solution {
+public:
+    int numRabbits(vector<int>& answers) {
+        sort(answers.begin(), answers.end());
+        int ans = answers[0] + 1, cand = answers[0], cnt = 1;
+        for (int i = 1; i < size(answers); i++) {
+            if (answers[i] == cand && cnt + 1 <= cand + 1) cnt++;
+            else {
+                ans += answers[i] + 1;
+                cand = answers[i];
+                cnt = 1;
+            }
+        }
+        return ans;
+    }
+};
