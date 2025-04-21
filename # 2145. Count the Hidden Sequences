@@ -1,0 +1,17 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int numberOfArrays(vector<int>& differences, int lower, int upper) {
+        long long l = 0, h = 0, cur = 0;
+        for (int i : differences) {
+            cur += i;
+            l = std::min(l, cur);
+            h = std::max(h, cur);
+        }
+        int d = h - l;
+        if (d > upper - lower) return 0;
+        return upper - lower - d + 1;
+    }
+};
