@@ -1,0 +1,26 @@
+#include <unordered_map>
+class Solution {
+public:
+    int countLargestGroup(int n) {
+        std::unordered_map<int, int> m;
+        int c = 0, ans = 0;
+        for (int i = 1; i <= n; i++) {
+            int j = helper(i);
+            m[j]++;
+            c = std::max(c, m[j]);
+        }
+        for (auto& p : m) {
+            if (p.second == c) ans++;
+        }
+        return ans;
+    }
+private:
+    int helper(int i) {
+        int ans = 0;
+        while (i > 0) {
+            ans += i % 10;
+            i /= 10;
+        }
+        return ans;
+    }
+};
