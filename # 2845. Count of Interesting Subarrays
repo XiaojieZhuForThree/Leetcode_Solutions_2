@@ -1,0 +1,23 @@
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    long long countInterestingSubarrays(vector<int>& nums, int modulo, int k) {
+        long long ans = 0;
+        int cur = 0;
+        vector<int> dp;
+        dp.push_back(0);
+        for (int i : nums) {
+            if (i % modulo == k) cur++;
+            dp.push_back(cur % modulo);
+        }
+        std::unordered_map<int, int> m;
+        for (int i : dp) {
+            ans += m[(i + modulo - k) % modulo];
+            m[i]++;
+        }
+        return ans;
+    }
+};
