@@ -30,3 +30,26 @@ private:
         return ans;
     }
 };
+
+
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        int m = nums[0];
+        for (int i : nums) m = std::max(m, i);
+        int l = 0, cnt = 0;
+        long long ans = 0;
+        for (int r = 0; r < size(nums); r++) {
+            if (nums[r] == m) cnt++;
+            if (cnt < k) continue;
+            while (cnt >= k) {
+                if (nums[l] == m) cnt--;
+                l++;
+            }
+            cnt++;
+            l--;
+            ans += l + 1;
+        }
+        return ans;
+    }
+};
