@@ -1,0 +1,18 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int numEquivDominoPairs(vector<vector<int>>& dominoes) {
+        int dp[10][10];
+        for (auto& d : dominoes) dp[std::min(d[0], d[1])][std::max(d[0], d[1])]++;
+        int ans = 0;
+        for (int i = 1; i <= 9; i++) {
+            for (int j = 1; j <= 9; j++) {
+                if (dp[i][j] < 2) continue;
+                ans += dp[i][j] * (dp[i][j] - 1) / 2;
+            }
+        }
+        return ans;
+    }
+};
