@@ -1,0 +1,31 @@
+#include <vector>
+#include <queue>
+using std::vector;
+
+class Solution {
+public:
+    int minTimeToReach(vector<vector<int>>& moveTime) {
+        vector<std::pair<int, int>> dirs({ {1, 0}, {-1, 0}, {0, 1}, {0, -1} });
+        auto comp = [](vector<int>& a, vector<int>& b) {
+            return a[0] > b[0];
+            };
+        std::priority_queue<vector<int>, vector<vector<int>>, decltype(comp)> q(comp);
+        q.push({ 0, 0, 0 });
+        int m = size(moveTime), n = size(moveTime[0]);
+        vector<vector<int>> s(m, vector<int>(n, -1));
+        while (!q.empty()) {
+            auto cur = q.top();
+            q.pop();
+            if (cur[1] == m - 1 && cur[2] == n - 1) return cur[0];
+            for (auto& d : dirs) {
+                int nx = cur[1] + d.first, ny = cur[2] + d.second;
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                int t = std::max(moveTime[nx][ny], cur[0]) + 1;
+                if (s[nx][ny] != -1 && s[nx][ny] <= t) continue;
+                s[nx][ny] = t;
+                q.push({ t, nx, ny });
+            }
+        }
+        return -1;
+    }
+};
