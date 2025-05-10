@@ -1,0 +1,28 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    long long minSum(vector<int>& nums1, vector<int>& nums2) {
+        long long s1 = 0, z1 = 0, s2 = 0, z2 = 0;
+        for (int i : nums1) {
+            s1 += i;
+            if (i == 0) z1++;
+        }
+        for (int i : nums2) {
+            s2 += i;
+            if (i == 0) z2++;
+        }
+        if (s1 > s2) {
+            return helper(s2, s1, z2, z1);
+        }
+        return helper(s1, s2, z1, z2);
+    }
+private:
+    long long helper(long long s1, long long s2, long long z1, long long z2) {
+        long long min_diff = s2 - s1 + z2;
+        if (z1 > min_diff && z2 == 0) return -1LL;
+        else if (z1 == 0 && min_diff > 0) return -1LL;
+        return std::max(min_diff, z1) + s1;
+    }
+};
