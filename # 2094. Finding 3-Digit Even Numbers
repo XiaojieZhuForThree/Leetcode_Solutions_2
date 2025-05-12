@@ -1,0 +1,28 @@
+#include <vector>
+#include <unordered_map>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> findEvenNumbers(vector<int>& digits) {
+        vector<int> ans;
+        std::unordered_map<int, int> m;
+        for (int i : digits) m[i]++;
+        for (int i = 100; i < 1000; i += 2) {
+            if (yes(i, m)) ans.push_back(i);
+        }
+        return ans;
+    }
+private:
+    bool yes(int i, std::unordered_map<int, int> m) {
+        std::unordered_map<int, int> n;
+        while (i > 0)  {
+            n[i % 10]++;
+            i /= 10;
+        }
+        for (auto& p : n) {
+            if (!m.count(p.first) || m[p.first] < p.second) return false;
+        }
+        return true;
+    }
+};
