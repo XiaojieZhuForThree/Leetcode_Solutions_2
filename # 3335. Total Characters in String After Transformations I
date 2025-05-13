@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<long long>> dp;
+    long long MOD = (long long)(1e9 + 7);
+    int lengthAfterTransformations(string s, int t) {
+        long long ans = 0;
+        dp.resize(26, vector<long long>(t + 1, -1));
+        for (char c : s) {
+            ans += helper(c, t);
+            ans %= MOD;
+        }
+        return ans;
+    }
+private:
+    long long helper(char c, int i) {
+        if (dp[c - 'a'][i] != -1) return dp[c - 'a'][i];
+        if (c + i <= 'z') return 1;
+        int diff = i - (26 - (c - 'a'));
+        dp[c - 'a'][i] = (helper('a', diff) + helper('b', diff)) % MOD;
+        return dp[c - 'a'][i];
+    }
+};
