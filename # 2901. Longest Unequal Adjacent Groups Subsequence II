@@ -1,0 +1,40 @@
+#include <vector>
+#include <string>
+using std::vector;
+using std::string;
+
+class Solution {
+public:
+    vector<string> getWordsInLongestSubsequence(vector<string>& words, vector<int>& groups) {
+        int n = size(words), m = 1, e = 0;
+        vector<string> ans;
+        vector<int> l(n, 1), prev(n, -1);
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (groups[i] == groups[j]) continue;
+                if (size(words[i]) != size(words[j])) continue;
+                if (ham(words[i], words[j]) != 1) continue;
+                if (1 + l[j] <= l[i]) continue;
+                l[i] = 1 + l[j];
+                prev[i] = j;
+            }
+            if (m < l[i]) {
+                m = l[i];
+                e = i;
+            }
+        }
+        while (prev[e] != -1) {
+            ans.push_back(words[e]);
+            e = prev[e];
+        }
+        ans.push_back(words[e]);
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+private:
+    int ham(string& a, string& b) {
+        int ans = 0;
+        for (int i = 0; i < size(a); i++) ans += a[i] != b[i];
+        return ans;
+    }
+};
