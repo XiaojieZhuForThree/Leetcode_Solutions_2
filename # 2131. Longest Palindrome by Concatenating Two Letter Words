@@ -1,0 +1,32 @@
+#include <unordered_map>
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
+class Solution {
+public:
+    int longestPalindrome(vector<string>& words) {
+        int ans = 0;
+        bool used = false;
+        std::unordered_map<string, int> m;
+        for (auto& w : words) m[w]++;
+        for (auto& p : m) {
+            auto& s = p.first;
+            if (s[0] == s[1]) {
+                if (p.second % 2 == 1) {
+                    if (!used) {
+                        ans += 2 * p.second;
+                        used = true;
+                    } else ans += 4 * (p.second / 2);
+                } else ans += 2 * p.second;
+            } else {
+                string r(s);
+                reverse(r.begin(), r.end());
+                if (!m.count(r)) continue;
+                ans += 2 * std::min(p.second, m[r]);
+            }
+        }
+        return ans;
+    }
+};
