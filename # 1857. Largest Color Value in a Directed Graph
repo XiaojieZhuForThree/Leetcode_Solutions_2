@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int ans = 1;
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
+        int n = size(colors);
+        unordered_map<int, vector<int>> m, dp;
+        for (int i = 0; i < n; i++) {
+            vector<int> v(26, 0);
+            dp[i] = v;
+        }
+        vector<int> ind(n, 0);
+        for (auto& e : edges) {
+            ind[e[1]]++;
+            m[e[0]].push_back(e[1]);
+        }
+        deque<int> q;
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if (ind[i] == 0) q.push_back(i);
+        }
+        while (!q.empty()) {
+            int cur = q.front();
+            q.pop_front();
+            cnt++;
+            dp[cur][colors[cur] - 'a']++;
+            for (int i : dp[cur]) ans = max(ans, i);
+            for (int j : m[cur]) {
+                for (int k = 0; k < 26; k++) dp[j][k] = max(dp[j][k], dp[cur][k]);
+                ind[j]--;
+                if (ind[j] == 0) q.push_back(j);
+            }
+        }
+        if (cnt < n) return -1;
+        return ans;
+    }
+};
