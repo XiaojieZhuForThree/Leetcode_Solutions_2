@@ -1,0 +1,45 @@
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
+        vector<int> h1 = helper(edges1, k), h2 = helper(edges2, k - 1);
+        vector<int> ans;
+        int m = *max_element(h2.begin(), h2.end());
+        for (int i = 0; i <= size(edges1); i++) {
+            ans.push_back(h1[i] + m);
+        }
+        return ans;
+    }
+private:
+    vector<int> helper(vector<vector<int>>& e, int k) {
+        int n = size(e) + 1;
+        std::unordered_map<int, vector<int>> m;
+        for (auto& v : e) {
+            m[v[0]].push_back(v[1]);
+            m[v[1]].push_back(v[0]);
+        }
+        vector<int> ans(n, 0);
+        std::unordered_set<int> seen;
+        for (int i = 0; i < n; i++) {
+            seen.clear();
+            ans[i] = dfs(i, seen, m, k);
+        }
+        return ans;
+    }
+    int dfs(int i, std::unordered_set<int>& seen, std::unordered_map<int, vector<int>>& m, int k) {
+        if (seen.count(i)) return 0;
+        if (k < 0) return 0;
+        if (k == 0) return 1;
+        seen.insert(i);
+        int ans = 1;
+        for (int j : m[i]) {
+            if (seen.count(j)) continue;
+            ans += dfs(j, seen, m, k - 1);
+        }
+        return ans;
+    }
+};
