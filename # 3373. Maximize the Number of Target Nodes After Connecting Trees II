@@ -1,0 +1,42 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        auto h1 = helper(edges1), h2 = helper(edges2);
+        int m = 0;
+        for (auto& p : h2) m = std::max(m, std::max(p.first, p.second));
+        vector<int> ans;
+        for (auto& p : h1) ans.push_back(p.first + m);
+        return ans;
+    }
+private:
+    vector<std::pair<int, int>> helper(vector<vector<int>>& e) {
+        int n = size(e) + 1;
+        vector<std::pair<int, int>> ans;
+        vector<vector<int>> v(n);
+        vector<bool> isEven(n);
+        std::pair<int, int> z;
+        for (auto& i : e) {
+            v[i[0]].push_back(i[1]);
+            v[i[1]].push_back(i[0]);
+        }
+        dfs(0, -1, true, v, z, isEven);
+        ans.push_back(z);
+        for (int i = 1; i < n; i++) {
+            if (isEven[i]) ans.push_back({ans[0].first, ans[0].second});
+            else ans.push_back({ans[0].second, ans[0].first});
+        }
+        return ans;
+    }
+    void dfs(int i, int prev, bool even, vector<vector<int>>& v, std::pair<int, int>& z, vector<bool>& isEven) {
+        isEven[i] = even;
+        if (even) z.first++;
+        else z.second++;
+        for (int j : v[i]) {
+            if (j == prev) continue;
+            dfs(j, i, !even, v, z, isEven);
+        }
+    }
+};
