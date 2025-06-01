@@ -1,0 +1,13 @@
+class Solution {
+public:
+    long long distributeCandies(int n, int limit) {
+        long long ans = 0;
+        for (int i = 0; i <= std::min(n, limit); i++) ans += helper(n - i, limit);
+        return ans;
+    }
+private:
+    long long helper(int i, int limit) {
+        if (i > limit * 2) return 0;
+        return i + 1 - std::max(0, (i - limit)) * 2;
+    }
+};
