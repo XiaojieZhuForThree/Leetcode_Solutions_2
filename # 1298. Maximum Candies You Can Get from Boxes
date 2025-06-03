@@ -1,0 +1,36 @@
+#include <vector>
+#include <unordered_set>
+#include <deque>
+using std::vector;
+
+class Solution {
+public:
+    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
+        std::unordered_set<int> r, k;
+        std::deque<int> q;
+        int ans = 0;
+        for (int i : initialBoxes) {
+            if (status[i] == 1) q.push_back(i);
+            else if (k.count(i)) q.push_back(i);
+            else r.insert(i);
+        }
+        while (!q.empty()) {
+            int i = q.front();
+            q.pop_front();
+            ans += candies[i];
+            for (int j : keys[i]) {
+                k.insert(j);
+                if (r.count(j)) {
+                    q.push_back(j);
+                    r.erase(j);
+                }
+            }
+            for (int j : containedBoxes[i]) {
+                if (status[j] == 1) q.push_back(j);
+                else if (k.count(j)) q.push_back(j);
+                else r.insert(j);
+            }
+        }
+        return ans;
+    }
+};
