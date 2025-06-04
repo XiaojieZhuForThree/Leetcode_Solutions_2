@@ -1,0 +1,20 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    string answerString(string word, int numFriends) {
+        if (numFriends == 1) return word;
+        char m = 'a';
+        for (char c : word) m = std::max(m, c);
+        string ans = "";
+        for (int i = 0; i < size(word); i++) {
+            if (word[i] != m) continue;
+            string cand = "";
+            if (i >= numFriends - 1) cand = word.substr(i, size(word) - i);
+            else cand = word.substr(i, size(word) - (numFriends- 1));
+            ans = max(ans, cand);
+        }
+        return ans;
+    }
+};
