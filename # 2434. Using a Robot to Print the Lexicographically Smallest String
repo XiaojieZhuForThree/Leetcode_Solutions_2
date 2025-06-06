@@ -1,0 +1,39 @@
+#include <string>
+#include <deque>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+    string robotWithString(string s) {
+        std::deque<char> stk;
+        string ans = "";
+        std::vector<int> freq(26);
+
+        for (char c : s) {
+            freq[c - 'a']++;
+        }
+
+        for (char c : s) {
+            stk.push_back(c);
+            freq[c - 'a']--;
+            while (!stk.empty() && stk.back() <= helper(freq)) {
+                ans += stk.back();
+                stk.pop_back();
+            }
+        }
+
+        while (!stk.empty()) {
+            ans += stk.back();
+            stk.pop_back();
+        }
+        return ans;
+    }
+private:
+    char helper(std::vector<int>& freq) {
+        for (int i = 0; i < 26; i++) {
+            if (freq[i]) return 'a' + i;
+        }
+        return 'a';
+    }
+};
