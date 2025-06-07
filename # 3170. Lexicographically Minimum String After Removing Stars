@@ -1,0 +1,35 @@
+#include <string>
+#include <queue>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+    string clearStars(string s) {
+        auto comp = [](std::pair<char, int> a, std::pair<char, int> b) {
+            if (a.first == b.first) return a.second < b.second;
+            return a.first > b.first;
+        };
+        std::priority_queue<std::pair<char, int>, std::vector<std::pair<char, int>>, decltype(comp)> q(comp);
+        std::vector<bool> checked(size(s), false);
+        int i = 0;
+        for (int j = 0; j < size(s); j++) {
+            if (s[j] != '*') continue;
+            checked[j] = true;
+            while (i < j) {
+                if (s[i] == '*') continue;
+                q.push({s[i], i});
+                i++;
+            }
+            i++;
+            checked[q.top().second] = true;
+            q.pop();
+        }
+        string ans;
+        for (int i = 0; i < size(s); i++) {
+            if (checked[i]) continue;
+            ans += s[i];
+        }
+        return ans;
+    }
+};
