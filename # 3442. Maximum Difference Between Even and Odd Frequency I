@@ -1,0 +1,18 @@
+#include <vector>
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    int maxDifference(string s) {
+        std::vector<int> v(26, 0);
+        for (char c : s) v[c - 'a']++;
+        int ob = 0, es = size(s);
+        for (int i : v) {
+            if (i == 0) continue;
+            if (i % 2) ob = std::max(ob, i);
+            else es = std::min(es, i);
+        }
+        return ob - es;
+    }
+};
