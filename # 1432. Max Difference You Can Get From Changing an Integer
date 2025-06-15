@@ -1,0 +1,38 @@
+#include <string>
+class Solution {
+public:
+    int maxDiff(int num) {
+        return ma(num) - mi(num);
+    }
+private:
+    int ma(int i) {
+        std::string s = std::to_string(i);
+        char r = '9';
+        for (char c : s) {
+            if (c != r) {
+                r = c;
+                break;
+            }
+        }
+        return helper(s, r, '9');
+    }
+    int mi(int i) {
+        std::string s = std::to_string(i);
+        if (s[0] != '1') return helper(s, s[0], '1');
+        char a = '1', b = '1';
+        for (char c : s) {
+            if (c != '0' && c != '1') {
+                a = c;
+                b = '0';
+                break;
+            }
+        }
+        return helper(s, a, b);
+    }
+    int helper(std::string& s, char a, char b) {
+        for (int i = 0; i < size(s); i++) {
+            if (s[i] == a) s[i] = b;
+        }
+        return stoi(s);
+    }
+};
