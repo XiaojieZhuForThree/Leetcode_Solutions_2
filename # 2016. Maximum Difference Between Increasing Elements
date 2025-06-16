@@ -1,0 +1,14 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int maximumDifference(vector<int>& nums) {
+        int ans = -1, cur = nums[0];
+        for (int i = 1; i < size(nums); i++) {
+            if (nums[i] > cur) ans = std::max(ans, nums[i] - cur);
+            cur = std::min(cur, nums[i]);
+        }
+        return ans;
+    }
+};
