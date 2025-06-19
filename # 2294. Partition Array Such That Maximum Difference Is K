@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int partitionArray(vector<int>& nums, int k) {
+        sort(begin(nums), end(nums));
+        int ans = 0, l = 0, r = 0;
+        while (l < size(nums)) {
+            while (r < size(nums) && nums[r] - nums[l] <= k) r++;
+            ans++;
+            l = r;
+            r = l;
+        }
+        return ans;
+    }
+};
