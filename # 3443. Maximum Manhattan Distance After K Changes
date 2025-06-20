@@ -1,0 +1,38 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    int maxDistance(string s, int k) {
+        return std::max(std::max(helper(s, k, true, true), helper(s, k, true, false)), std::max(helper(s, k, false, true), helper(s, k, false, false)));
+    }
+private:
+    int helper(string& s, int k, bool cn, bool ce) {
+        int ans = 0, n = 0, e = 0;
+        for (char c : s) {
+            if (c == 'N') {
+                if (!cn && k > 0) {
+                    n--;
+                    k--;
+                } else n++;
+            } else if (c == 'S') {
+                if (cn && k > 0) {
+                    n++;
+                    k--;
+                } else n--;
+            } else if (c == 'E') {
+                if (!ce && k > 0) {
+                    e--;
+                    k--;
+                } else e++;
+            } else {
+                if (ce && k > 0) {
+                    e++;
+                    k--;
+                } else e--;
+            }
+            ans = std::max(ans, abs(n) + abs(e));
+        }
+        return ans;
+    }
+};
