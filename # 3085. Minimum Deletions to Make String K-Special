@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+using std::string;
+
+class Solution {
+public:
+    int minimumDeletions(string word, int k) {
+        std::vector<int> v(26, 0);
+        for (char c : word) v[c - 'a']++;
+        int ans = size(word);
+        for (int i : v) {
+            if (i == 0) continue;
+            ans = std::min(ans, helper(v, i, k));
+        }
+        return ans;
+    }
+private:
+    int helper(std::vector<int>& v, int i, int k) {
+        int ans = 0;
+        for (int j : v) {
+            if (j == 0) continue;
+            if (j < i) ans += j;
+            else if (j - i <= k) continue;
+            else ans += j - i - k;
+        }
+        return ans;
+    }
+};
