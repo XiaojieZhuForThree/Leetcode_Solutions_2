@@ -1,0 +1,27 @@
+#include <string>
+using std::string;
+
+class Solution {
+public:
+    int longestSubsequence(string s, int k) {
+        string ans = "", ks = convert(k);
+        for (int i = size(s) - 1; i >= 0; i--) {
+            if (s[i] == '0') ans = "0" + ans;
+            else if (yes("1" + ans, ks)) ans = "1" + ans;
+        }
+        return size(ans);
+    }
+private:
+    string convert(int i) {
+        string ans = "";
+        while (i > 0) {
+            ans = std::to_string(i % 2) + ans;
+            i /= 2;
+        }
+        return ans;
+    }
+    bool yes(string a, string b) {
+        if (size(a) != size(b)) return size(a) < size(b);
+        return a <= b;
+    }
+};
