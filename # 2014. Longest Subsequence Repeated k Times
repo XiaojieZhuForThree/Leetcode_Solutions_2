@@ -1,0 +1,37 @@
+#include <string>
+#include <deque>
+using std::string;
+
+class Solution {
+public:
+    string longestSubsequenceRepeatedK(string s, int k) {
+        string ans = "";
+        std::deque<string> q;
+        q.push_back("");
+        while (!q.empty()) {
+            string cur = q.front();
+            q.pop_front();
+            for (char c = 'a'; c <= 'z'; c++) {
+                string next = cur + c;
+                if (yes(next, s, k)) {
+                    ans = next;
+                    q.push_back(next);
+                }
+            }
+        }
+        return ans;
+    }
+private:
+    bool yes(string sub, string t, int k) {
+        int count = 0, i = 0;
+        for (char c : t) {
+            if (c == sub[i]) {
+                if (++i == sub.size()) {
+                    i = 0;
+                    if (++count == k) return true;
+                }
+            }
+        }
+        return false;
+    }
+};
