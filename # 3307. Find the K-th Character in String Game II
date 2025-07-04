@@ -1,0 +1,23 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    char kthCharacter(long long k, vector<int>& operations) {
+        long long cur = 1, ops = 0, shift = 0;
+        while (cur < k) {
+            cur <<= 1;
+            ops++;
+        }
+        k--;
+        ops--;
+        for (; ops >= 0; ops--) {
+            if (k >= cur / 2) {
+                if (operations[ops] == 1) shift++;
+                k -= cur / 2;
+            }
+            cur >>= 1;
+        }
+        return 'a' + (shift % 26);
+    }
+};
