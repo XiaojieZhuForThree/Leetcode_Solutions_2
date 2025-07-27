@@ -1,0 +1,20 @@
+#include <vector>
+using std::vector;
+
+class Solution {
+public:
+    int countHillValley(vector<int>& nums) {
+        int ans = 0;
+        for (int i = 0; i < size(nums);) {
+            int j = i + 1, k = i - 1;
+            while (j < size(nums) && nums[j] == nums[i]) j++;
+            while (k >= 0 && nums[k] == nums[i]) k--;
+            if (j < size(nums) && k >= 0) {
+                if (nums[j] < nums[i] && nums[k] < nums[i]) ans++;
+                else if (nums[j] > nums[i] && nums[k] > nums[i]) ans++;
+            }
+            i = j;
+        }
+        return ans;
+    }
+};
